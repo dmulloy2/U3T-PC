@@ -1,0 +1,138 @@
+/**
+ * Copyright (c) 2015 Dan Mulloy
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+package net.dmulloy2.ultimatetictactoe.gui;
+
+import java.awt.Color;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import javax.swing.JPanel;
+
+import net.dmulloy2.ultimatetictactoe.U3T;
+import net.dmulloy2.ultimatetictactoe.internals.Conquerable;
+import net.dmulloy2.ultimatetictactoe.types.Box;
+import net.dmulloy2.ultimatetictactoe.types.Player;
+import net.dmulloy2.ultimatetictactoe.types.Rules;
+
+/**
+ * Individual boxes in the minor grids
+ * @author dmulloy2
+ */
+public class MinorBox extends JPanel implements Conquerable {
+	private static final long serialVersionUID = - 5595318327449610027L;
+	private static boolean firstMove = false;
+
+	private Player conquerer;
+
+	private final MinorGrid minor;
+	private final Box thisType;
+
+	private final U3T main;
+
+	public MinorBox(U3T main, MinorGrid minor, Box thisType) {
+		super();
+
+		this.main = main;
+		this.minor = minor;
+		this.thisType = thisType;
+
+		draw();
+	}
+
+	private void draw() {
+		setBackground(Color.WHITE);
+		setLayout(null);
+		setSize(75, 75);
+
+		addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent event) {
+				MinorBox.this.mouseClicked();
+			}
+		});
+	}
+
+	private void mouseClicked() {
+		if (Rules.preventGambit && ! firstMove && thisType == Box.MIDDLE && minor.getBoxType() == Box.MIDDLE) {
+			// Prevent Orlin's gambit
+			main.error("You cannot go in the very middle box to start the game!");
+			return;
+		}
+
+		Box nextBox = main.getNextBox();
+		if (nextBox != null && nextBox != minor.getBoxType()) {
+			main.error("You must go in the " + main.getNextBox() + " box!");
+			return;
+		}
+
+		if (! Rules.allowUseOfConquered && minor.getConquerer() != null) {
+			main.info("This box has been conquered.");
+			return;
+		}
+
+		if (conquerer != null) {
+			if (minor.isFull()) {
+				// Arbitrary move
+				main.setNextBox(null);
+				main.info("This box is full. You may go anywhere on the board.");
+				return;
+			}
+
+			main.error(conquerer + " has already conquered this box!");
+			return;
+		}
+
+		this.conquerer = main.getPlayer();
+		drawMark(conquerer);
+
+		main.nextPlayer();
+		main.setNextBox(thisType);
+
+		if (! Rules.allowUseOfConquered) {
+			MinorGrid nextGrid = main.getMajorGrid().getGrid(thisType);
+			if (nextGrid.getConquerer() != null) {
+				// Arbitrary move
+				main.setNextBox(null);
+			}
+		}
+
+		main.triggerUpdate();
+		firstMove = true;
+	}
+
+	// TODO: Switch to true X's and O's
+	private void drawMark(Player player) {
+		switch (player) {
+			case X:
+				setBackground(Color.BLUE);
+				break;
+			case O:
+				setBackground(Color.RED);
+				break;
+		}
+	}
+
+	@Override
+	public Player getConquerer() {
+		return conquerer;
+	}
+}
