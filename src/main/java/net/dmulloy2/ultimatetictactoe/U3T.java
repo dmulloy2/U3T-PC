@@ -85,6 +85,10 @@ public class U3T {
 		return majorGrid;
 	}
 
+	public U3TGUI getBoard() {
+		return board;
+	}
+
 	public Player getPlayer() {
 		return player;
 	}

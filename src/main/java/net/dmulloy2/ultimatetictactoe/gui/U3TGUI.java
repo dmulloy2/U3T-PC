@@ -34,6 +34,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import net.dmulloy2.ultimatetictactoe.U3T;
+import net.dmulloy2.ultimatetictactoe.types.Box;
 import net.dmulloy2.ultimatetictactoe.types.MathUtil;
 
 /**
@@ -44,6 +45,7 @@ public class U3TGUI extends JFrame {
 
 	private final U3T main;
 	private JTextField outputField;
+	private Key key;
 
 	public U3TGUI(U3T main) {
 		super("Ultimate TicTacToe by Dan Mulloy");
@@ -100,8 +102,14 @@ public class U3TGUI extends JFrame {
 		grid.setBounds(0, 0, width, width);
 		grid.init();
 
+		// Add the main grid
 		getContentPane().add(grid);
-		
+
+		// Add the key for now, we don't know enough to actually do anything with it for now.
+		key = new Key(main, Box.MIDDLE, 10);
+		key.setVisible(false);
+		getContentPane().add(key);
+
 		// Text at the bottom
 		outputField = new JTextField("", 10);
 		outputField.setLocation(0, width);
@@ -114,5 +122,27 @@ public class U3TGUI extends JFrame {
 
 	public void logInBox(String message) {
 		outputField.setText(message);
+	}
+
+	public Key getKey() {
+		return key;
+	}
+
+	public void createKey() {
+		// Make it slightly to the right of the middle right box, like 1/4th of the free width
+		Rectangle resolution = getGraphicsConfiguration().getBounds();
+		int gridWidth = main.getMajorGrid().getWidth();
+		int freeWidth = (int) resolution.getWidth() - gridWidth;
+
+		MinorGrid minor = main.getMajorGrid().getGrid(Box.MIDDLE_RIGHT);
+		Rectangle bounds = minor.getBounds();
+
+		double x = bounds.getX() + (freeWidth / 2);
+		double y = bounds.getY();
+		double width = bounds.getWidth();
+
+		key.setBounds((int) x, (int) y, (int) width, (int) width);
+		key.init();
+		key.setVisible(true);
 	}
 }

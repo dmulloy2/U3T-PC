@@ -108,7 +108,7 @@ public class MinorBox extends JPanel implements Conquerable, Serializable {
 		}
 
 		this.conquerer = main.getPlayer();
-		drawMark(conquerer);
+		drawMark(conquerer, false);
 
 		main.nextPlayer();
 		main.setNextBox(thisType);
@@ -125,9 +125,23 @@ public class MinorBox extends JPanel implements Conquerable, Serializable {
 		firstMove = true;
 
 		main.logNextPlayer();
+		minor.repaint();
 	}
 
-	private void drawMark(Player player) {
+	private void drawMark(Player player, boolean fill) {
+		if (fill) {
+			switch (player) {
+				case PLAYER_1:
+					setBackground(Player.PLAYER_1.getColor());
+					break;
+				case PLAYER_2:
+					setBackground(Player.PLAYER_2.getColor());
+					break;
+			}
+
+			return;
+		}
+
 		// Hacky way to get it centered
 		// Basically it was centered at x=15 when width=99
 		double magicRatio = 15.0D / 99.0D;
@@ -160,8 +174,8 @@ public class MinorBox extends JPanel implements Conquerable, Serializable {
 		return map;
 	}
 
-	public void setConquerer(Player player) {
+	public void setConquerer(Player player, boolean fill) {
 		this.conquerer = player;
-		drawMark(player);
+		drawMark(player, fill);
 	}
 }

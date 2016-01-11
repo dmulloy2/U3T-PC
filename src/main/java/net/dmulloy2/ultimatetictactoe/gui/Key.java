@@ -21,8 +21,11 @@
  */
 package net.dmulloy2.ultimatetictactoe.gui;
 
+import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
+import javax.swing.BorderFactory;
 
 import net.dmulloy2.ultimatetictactoe.U3T;
 import net.dmulloy2.ultimatetictactoe.types.Box;
@@ -34,18 +37,27 @@ import net.dmulloy2.ultimatetictactoe.types.Player;
 public class Key extends MinorGrid {
 	private static final long serialVersionUID = 2417357033766579161L;
 
+	private boolean exists = false;
+
 	public Key(U3T main, Box boxType, int buffer) {
 		super(main, boxType, buffer);
-		
+
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent event) {
 				event.consume();
 			}
 		});
+
+		setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, buffer));
 	}
 
 	public void onConquered(Player player, Box box) {
-		boxes[box.getY()][box.getX()].setConquerer(player);
+		if (! exists) {
+			main.getBoard().createKey();
+			exists = true;
+		}
+
+		boxes[box.getY()][box.getX()].setConquerer(player, true);
 	}
 }

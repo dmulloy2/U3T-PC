@@ -23,6 +23,7 @@ package net.dmulloy2.ultimatetictactoe.gui;
 
 import java.awt.Color;
 import java.awt.ComponentOrientation;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 
 import javax.swing.JPanel;
@@ -31,7 +32,6 @@ import net.dmulloy2.ultimatetictactoe.U3T;
 import net.dmulloy2.ultimatetictactoe.internals.Conquerable;
 import net.dmulloy2.ultimatetictactoe.types.Box;
 import net.dmulloy2.ultimatetictactoe.types.Combination;
-import net.dmulloy2.ultimatetictactoe.types.Constants;
 import net.dmulloy2.ultimatetictactoe.types.Player;
 
 /**
@@ -48,7 +48,7 @@ public class MinorGrid extends JPanel implements Conquerable {
 
 	private Color tint;
 
-	private final U3T main;
+	protected final U3T main;
 
 	public MinorGrid(U3T main, Box boxType, int buffer) {
 		super();
@@ -88,36 +88,58 @@ public class MinorGrid extends JPanel implements Conquerable {
 
 				// TODO: I'd like to get the tint working
 
-				/*Graphics graphics = getGraphics();
-				graphics.setColor(tint = new Color(0, 0, 255, 50));
-				graphics.fillRect(0, 0, getWidth(), getHeight());*/
+				paint(getGraphics());
 
-				setBackground(Constants.BLUE);
+				//setBackground(Constants.BLUE);
 			}
 
 			Combination comboO = Combination.threeInARow(Player.PLAYER_2, boxes);
 			if (comboO != null) {
 				this.conquerer = Player.PLAYER_2;
 
-				/*Graphics graphics = getGraphics();
-				graphics.setColor(tint = new Color(255, 0, 0, 50));
-				graphics.fillRect(0, 0, getWidth(), getHeight());*/
+				paint(getGraphics());
 
-				setBackground(Constants.RED);
+				//setBackground(Constants.RED);
 			}
 
-			if (conquerer != null || isFull())
+			if (conquerer != null || isFull()) {
 				main.getMajorGrid().triggerUpdate();
+				
+				if (conquerer != null) {
+					main.getBoard().getKey().onConquered(conquerer, boxType);
+				}
+			}
 		}
 	}
 
-	/*private void colorBoxes(Color color) {
-		for (int x = 0; x < boxes.length; x++) {
-			for (int y = 0; y < boxes.length; y++) {
-				boxes[x][y].setBackground(color);
-			}
+	public void repaint() {
+		if (conquerer != null) {
+			paint(getGraphics());
 		}
-	}*/
+	}
+
+	@Override
+	public void paint(Graphics graphics) {
+		super.paint(graphics);
+		if (conquerer == null) {
+			return;
+		}
+
+		Color color = graphics.getColor();
+
+		if (conquerer == Player.PLAYER_1) {
+			graphics.setColor(tint = derive(Player.PLAYER_1.getColor(), 50));
+		} else if (conquerer == Player.PLAYER_2) {
+			graphics.setColor(tint = derive(Player.PLAYER_2.getColor(), 50));
+		}
+
+		graphics.fillRect(0, 0, getWidth(), getHeight());
+		graphics.setColor(color);
+	}
+
+	private Color derive(Color color, int alpha) {
+		return new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha);
+	}
 
 	public Box getBoxType() {
 		return boxType;
