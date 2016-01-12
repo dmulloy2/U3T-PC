@@ -125,7 +125,7 @@ public class MinorBox extends JPanel implements Conquerable, Serializable {
 		firstMove = true;
 
 		main.logNextPlayer();
-		minor.repaint();
+		main.getMajorGrid().repaint();
 	}
 
 	private void drawMark(Player player, boolean fill) {

@@ -85,21 +85,13 @@ public class MinorGrid extends JPanel implements Conquerable {
 			Combination comboX = Combination.threeInARow(Player.PLAYER_1, boxes);
 			if (comboX != null) {
 				this.conquerer = Player.PLAYER_1;
-
-				// TODO: I'd like to get the tint working
-
 				paint(getGraphics());
-
-				//setBackground(Constants.BLUE);
 			}
 
 			Combination comboO = Combination.threeInARow(Player.PLAYER_2, boxes);
 			if (comboO != null) {
 				this.conquerer = Player.PLAYER_2;
-
 				paint(getGraphics());
-
-				//setBackground(Constants.RED);
 			}
 
 			if (conquerer != null || isFull()) {
@@ -109,12 +101,6 @@ public class MinorGrid extends JPanel implements Conquerable {
 					main.getBoard().getKey().onConquered(conquerer, boxType);
 				}
 			}
-		}
-	}
-
-	public void repaint() {
-		if (conquerer != null) {
-			paint(getGraphics());
 		}
 	}
 
