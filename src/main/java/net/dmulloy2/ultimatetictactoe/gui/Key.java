@@ -21,11 +21,8 @@
  */
 package net.dmulloy2.ultimatetictactoe.gui;
 
-import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
-import javax.swing.BorderFactory;
 
 import net.dmulloy2.ultimatetictactoe.U3T;
 import net.dmulloy2.ultimatetictactoe.types.Box;
@@ -49,7 +46,7 @@ public class Key extends MinorGrid {
 			}
 		});
 
-		setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, buffer));
+		//setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, buffer));
 	}
 
 	public void onConquered(Player player, Box box) {

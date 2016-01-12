@@ -22,6 +22,7 @@
 package net.dmulloy2.ultimatetictactoe.gui;
 
 import java.awt.Color;
+import java.awt.GridLayout;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,6 +31,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
@@ -44,10 +46,14 @@ public class U3TGUI extends JFrame {
 	private static final long serialVersionUID = - 5224324241899628439L;
 
 	private final U3T main;
+
 	private JTextField outputField;
+	private JMenuBar menuBar;
+
+	private JPanel keyPanel;
 	private Key key;
 
-	public U3TGUI(U3T main) {
+	public U3TGUI(final U3T main) {
 		super("Ultimate TicTacToe by Dan Mulloy");
 		this.main = main;
 
@@ -56,6 +62,9 @@ public class U3TGUI extends JFrame {
 			@Override
 			public void run() {
 				setVisible(true);
+
+				MajorGrid major = main.getMajorGrid();
+				setSize(major.getWidth() + 15, major.getHeight() + 80);
 			}
 		});
 
@@ -64,9 +73,10 @@ public class U3TGUI extends JFrame {
 
 	private void init() {
 		getContentPane().setLayout(null);
+		// getContentPane().setBackground(new Color(36, 64, 140));
 
 		// ---- Menu Bar
-		JMenuBar menuBar = new JMenuBar();
+		menuBar = new JMenuBar();
 		JMenu fileMenu = new JMenu("File");
 		JMenuItem save = new JMenuItem("Save");
 		save.addActionListener(new ActionListener() {
@@ -91,7 +101,7 @@ public class U3TGUI extends JFrame {
 		// ----
 
 		// Maximize it
-		setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
+		//setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
 
 		Rectangle resolution = getGraphicsConfiguration().getBounds();
 
@@ -108,7 +118,13 @@ public class U3TGUI extends JFrame {
 		// Add the key for now, we don't know enough to actually do anything with it for now.
 		key = new Key(main, Box.MIDDLE, 10);
 		key.setVisible(false);
-		getContentPane().add(key);
+
+		keyPanel = new JPanel();
+		keyPanel.setLayout(new GridLayout(1, 1, 10, 10));
+		keyPanel.add(key);
+		keyPanel.setVisible(false);
+
+		getContentPane().add(keyPanel);
 
 		// Text at the bottom
 		outputField = new JTextField("", 10);
@@ -129,7 +145,7 @@ public class U3TGUI extends JFrame {
 	}
 
 	public void createKey() {
-		// Make it slightly to the right of the middle right box, like 1/4th of the free width
+		// Make it slightly to the right of the middle right box, like 1/3rd of the free width
 		Rectangle resolution = getGraphicsConfiguration().getBounds();
 		int gridWidth = main.getMajorGrid().getWidth();
 		int freeWidth = (int) resolution.getWidth() - gridWidth;
@@ -137,12 +153,18 @@ public class U3TGUI extends JFrame {
 		MinorGrid minor = main.getMajorGrid().getGrid(Box.MIDDLE_RIGHT);
 		Rectangle bounds = minor.getBounds();
 
-		double x = bounds.getX() + (freeWidth / 2);
-		double y = bounds.getY();
-		double width = bounds.getWidth();
+		int x = (int) (bounds.getX() + (freeWidth / 3));
+		int y = (int) bounds.getY();
+		int width = (int) bounds.getWidth();
 
-		key.setBounds((int) x, (int) y, (int) width, (int) width);
+		keyPanel.setBounds(x, y, width, width);
+		keyPanel.setBackground(Color.DARK_GRAY);
+		keyPanel.setVisible(true);
+
+		//key.setBounds(x, y, width, width);
 		key.init();
 		key.setVisible(true);
+
+		setSize(x + width + 30, getHeight());
 	}
 }
