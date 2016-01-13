@@ -65,6 +65,19 @@ public class StartGUI extends JFrame {
 	private JCheckBox catsGameCheckBox;
 	private JComboBox<String> playerSelector;
 
+	private JTextField textField_1;
+	private JTextField textField_4;
+	private JTextField player1Symbol;
+	private JTextField textField_2;
+	private JTextField player1R;
+	private JTextField player1G;
+	private JTextField player1B;
+	private JTextField player2R;
+	private JTextField player2G;
+	private JTextField player2B;
+	private JTextField player2Symbol;
+	private JLabel label_2;
+
 	private void init() {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -137,22 +150,200 @@ public class StartGUI extends JFrame {
 		defaultSettings.setLayout(defaultSettingsLayout);
 		
 		JPanel customSettings = new JPanel();
-		customSettings.setLayout(null);
-		tabbedPane.addTab("Custom", null, customSettings, null);
+
+		tabbedPane.addTab("Custom", null, customSettings, "Customize the players in the game");
 		
-		JLabel lblNotYetImplemented = new JLabel("Not yet implemented :(");
-		lblNotYetImplemented.setBounds(10, 11, 154, 14);
-		customSettings.add(lblNotYetImplemented);
+		JPanel player1Panel = new JPanel();		
+		JPanel player2Panel = new JPanel();
+
+		GroupLayout customSettingsLayout = new GroupLayout(customSettings);
+		customSettingsLayout.setHorizontalGroup(
+			customSettingsLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(customSettingsLayout.createSequentialGroup()
+					.addComponent(player1Panel, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(player2Panel, GroupLayout.PREFERRED_SIZE, 151, GroupLayout.PREFERRED_SIZE)
+					.addGap(30))
+		);
+		customSettingsLayout.setVerticalGroup(
+			customSettingsLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(customSettingsLayout.createSequentialGroup()
+					.addGroup(customSettingsLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(player1Panel, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE)
+						.addComponent(player2Panel, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+		);
+		
+		player2R = new JTextField();
+		player2R.setColumns(10);
+		
+		JLabel label = new JLabel("R");
+		
+		JLabel label_1 = new JLabel("G");
+		
+		player2G = new JTextField();
+		player2G.setColumns(10);
+		
+		player2B = new JTextField();
+		player2B.setColumns(10);
+
+		Color player2Default = Player.PLAYER_2.getColor();
+		player2R.setText(Integer.toString(player2Default.getRed()));
+		player2G.setText(Integer.toString(player2Default.getBlue()));
+		player2B.setText(Integer.toString(player2Default.getGreen()));
+		
+		player2Symbol = new JTextField();
+		player2Symbol.setText("O");
+		player2Symbol.setColumns(10);
+		
+		label_2 = new JLabel("B");
+
+		GroupLayout player2Layout = new GroupLayout(player2Panel);
+		player2Layout.setHorizontalGroup(
+			player2Layout.createParallelGroup(Alignment.LEADING)
+				.addGroup(player2Layout.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(player2Layout.createParallelGroup(Alignment.LEADING)
+						.addComponent(player2Symbol, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE)
+						.addGroup(player2Layout.createSequentialGroup()
+							.addComponent(label, GroupLayout.PREFERRED_SIZE, 7, GroupLayout.PREFERRED_SIZE)
+							.addGap(10)
+							.addComponent(player2R, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(label_2, GroupLayout.PREFERRED_SIZE, 6, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(player2B, GroupLayout.PREFERRED_SIZE, 41, GroupLayout.PREFERRED_SIZE))
+						.addGroup(player2Layout.createSequentialGroup()
+							.addComponent(label_1, GroupLayout.PREFERRED_SIZE, 7, GroupLayout.PREFERRED_SIZE)
+							.addGap(10)
+							.addComponent(player2G, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap(26, Short.MAX_VALUE))
+		);
+		player2Layout.setVerticalGroup(
+			player2Layout.createParallelGroup(Alignment.LEADING)
+				.addGroup(player2Layout.createSequentialGroup()
+					.addGap(12)
+					.addComponent(player2Symbol, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addGap(6)
+					.addGroup(player2Layout.createParallelGroup(Alignment.LEADING)
+						.addGroup(player2Layout.createSequentialGroup()
+							.addGap(3)
+							.addComponent(label))
+						.addComponent(player2R, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addGroup(player2Layout.createParallelGroup(Alignment.BASELINE)
+							.addComponent(player2B, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addComponent(label_2)))
+					.addGap(6)
+					.addGroup(player2Layout.createParallelGroup(Alignment.LEADING)
+						.addComponent(label_1)
+						.addComponent(player2G, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+		);
+		player2Panel.setLayout(player2Layout);
+		
+		textField_1 = new JTextField();
+		textField_1.setColumns(10);
+		
+		textField_4 = new JTextField();
+		textField_4.setColumns(10);
+		
+		player1Symbol = new JTextField();
+		player1Symbol.setText("X");
+		player1Symbol.setColumns(10);
+		
+		textField_2 = new JTextField();
+		textField_2.setColumns(10);
+		
+		JLabel lblR = new JLabel("R");
+		
+		JLabel lblG = new JLabel("G");
+		
+		player1R = new JTextField();
+		player1R.setColumns(10);
+		
+		player1G = new JTextField();
+		player1G.setColumns(10);
+		
+		JLabel lblB = new JLabel("B");
+
+		player1B = new JTextField();
+		player1B.setColumns(10);
+
+		Color player1Default = Player.PLAYER_1.getColor();
+		player1R.setText(Integer.toString(player1Default.getRed()));
+		player1G.setText(Integer.toString(player1Default.getBlue()));
+		player1B.setText(Integer.toString(player1Default.getGreen()));
+
+		GroupLayout player1Layout = new GroupLayout(player1Panel);
+		player1Layout.setHorizontalGroup(
+			player1Layout.createParallelGroup(Alignment.LEADING)
+				.addGroup(player1Layout.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(player1Layout.createParallelGroup(Alignment.TRAILING, false)
+						.addComponent(player1Symbol, Alignment.LEADING)
+						.addGroup(Alignment.LEADING, player1Layout.createSequentialGroup()
+							.addGroup(player1Layout.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblR)
+								.addGroup(player1Layout.createSequentialGroup()
+									.addComponent(lblG)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, 0, GroupLayout.PREFERRED_SIZE)))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(player1Layout.createParallelGroup(Alignment.TRAILING, false)
+								.addComponent(player1G, Alignment.LEADING, 0, 0, Short.MAX_VALUE)
+								.addComponent(player1R, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE))
+							.addGroup(player1Layout.createParallelGroup(Alignment.LEADING, false)
+								.addGroup(player1Layout.createSequentialGroup()
+									.addGap(55)
+									.addComponent(textField_4, GroupLayout.PREFERRED_SIZE, 0, GroupLayout.PREFERRED_SIZE))
+								.addGroup(player1Layout.createSequentialGroup()
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(lblB)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(player1B, 0, 0, Short.MAX_VALUE)))))
+					.addGap(57)
+					.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, 0, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+		);
+		player1Layout.setVerticalGroup(
+			player1Layout.createParallelGroup(Alignment.LEADING)
+				.addGroup(player1Layout.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(player1Symbol, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(player1Layout.createParallelGroup(Alignment.LEADING)
+						.addGroup(player1Layout.createSequentialGroup()
+							.addGap(32)
+							.addGroup(player1Layout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(textField_4, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+						.addGroup(player1Layout.createSequentialGroup()
+							.addGroup(player1Layout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblR)
+								.addComponent(player1R, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblB)
+								.addComponent(player1B, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(player1Layout.createParallelGroup(Alignment.LEADING)
+								.addComponent(player1G, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblG))))
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+		);
+		player1Panel.setLayout(player1Layout);
+		customSettings.setLayout(customSettingsLayout);
+
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(10)
+				.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-						.addComponent(btnStart)
-						.addComponent(tabbedPane, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(18, Short.MAX_VALUE))
-				.addComponent(titleField, GroupLayout.DEFAULT_SIZE, 368, Short.MAX_VALUE)
+						.addComponent(titleField, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 331, Short.MAX_VALUE)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+								.addComponent(btnStart)
+								.addComponent(tabbedPane, GroupLayout.PREFERRED_SIZE, 321, GroupLayout.PREFERRED_SIZE))))
+					.addGap(47))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -160,11 +351,14 @@ public class StartGUI extends JFrame {
 					.addComponent(titleField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addGap(11)
 					.addComponent(tabbedPane, GroupLayout.PREFERRED_SIZE, 122, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGap(11)
 					.addComponent(btnStart)
 					.addContainerGap())
 		);
 		getContentPane().setLayout(groupLayout);
+		
+		JPanel continuePanel = new JPanel();
+		tabbedPane.addTab("Continue", null, continuePanel, "Continue a previously saved game");
 		pack();
 	}
 
@@ -179,7 +373,26 @@ public class StartGUI extends JFrame {
 			return;
 		}
 
+		String symbol1 = player1Symbol.getText();
+		if (symbol1.length() != 1) {
+			main.error("Player 1's symbol can only be one character!");
+			return;
+		}
+
+		String symbol2 = player2Symbol.getText();
+		if (symbol2.length() != 1) {
+			main.error("Player 2's symbol can only be one character!");
+			return;
+		}
+
+		Player.PLAYER_1.setSymbol(player1Symbol.getText());
+		Player.PLAYER_2.setSymbol(player2Symbol.getText());
+
 		main.start();
 		dispose();
+	}
+
+	private int rgbStandard(int i) {
+		return Math.max(0,  Math.min(i, 255));
 	}
 }

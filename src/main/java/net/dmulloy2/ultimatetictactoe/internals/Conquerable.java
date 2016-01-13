@@ -29,5 +29,9 @@ import net.dmulloy2.ultimatetictactoe.types.Player;
  */
 public interface Conquerable {
 
+	/**
+	 * Gets the conquerer of this object.
+	 * @return Conquerer, or null if unconquered
+	 */
 	public Player getConquerer();
 }

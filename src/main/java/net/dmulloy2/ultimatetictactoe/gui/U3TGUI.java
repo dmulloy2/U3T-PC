@@ -27,6 +27,7 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -54,7 +55,7 @@ public class U3TGUI extends JFrame {
 	private Key key;
 
 	public U3TGUI(final U3T main) {
-		super("Ultimate TicTacToe by Dan Mulloy");
+		super("Ultimate TicTacToe");
 		this.main = main;
 
 		init();
@@ -121,6 +122,7 @@ public class U3TGUI extends JFrame {
 
 		keyPanel = new JPanel();
 		keyPanel.setLayout(new GridLayout(1, 1, 10, 10));
+		keyPanel.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 10, false));
 		keyPanel.add(key);
 		keyPanel.setVisible(false);
 
@@ -153,12 +155,11 @@ public class U3TGUI extends JFrame {
 		MinorGrid minor = main.getMajorGrid().getGrid(Box.MIDDLE_RIGHT);
 		Rectangle bounds = minor.getBounds();
 
-		int x = (int) (bounds.getX() + (freeWidth / 3));
-		int y = (int) bounds.getY();
-		int width = (int) bounds.getWidth();
+		int x = (int) (bounds.getX() + (freeWidth / 3)) - 10;
+		int y = (int) bounds.getY() - 10;
+		int width = (int) bounds.getWidth() + 20;
 
 		keyPanel.setBounds(x, y, width, width);
-		keyPanel.setBackground(Color.DARK_GRAY);
 		keyPanel.setVisible(true);
 
 		//key.setBounds(x, y, width, width);

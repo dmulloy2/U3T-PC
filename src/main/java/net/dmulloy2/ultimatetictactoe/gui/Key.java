@@ -29,6 +29,7 @@ import net.dmulloy2.ultimatetictactoe.types.Box;
 import net.dmulloy2.ultimatetictactoe.types.Player;
 
 /**
+ * The key that appears to the right of the main board
  * @author Dan Mulloy
  */
 public class Key extends MinorGrid {
@@ -42,11 +43,10 @@ public class Key extends MinorGrid {
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent event) {
+				// Cancel all mouse clicked events in the key
 				event.consume();
 			}
 		});
-
-		//setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, buffer));
 	}
 
 	public void onConquered(Player player, Box box) {
@@ -55,6 +55,7 @@ public class Key extends MinorGrid {
 			exists = true;
 		}
 
+		// Draw a solid square in the corresponding minor box
 		boxes[box.getY()][box.getX()].setConquerer(player, true);
 	}
 }

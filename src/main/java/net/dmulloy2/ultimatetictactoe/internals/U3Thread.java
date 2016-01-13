@@ -24,6 +24,7 @@ package net.dmulloy2.ultimatetictactoe.internals;
 import net.dmulloy2.ultimatetictactoe.U3T;
 
 /**
+ * UltimateTicTacToe Main Thread
  * @author Dan Mulloy
  */
 public class U3Thread extends Thread {

@@ -62,6 +62,9 @@ public class MinorBox extends JPanel implements Conquerable, Serializable {
 		this.thisType = thisType;
 	}
 
+	/**
+	 * Initializes this component
+	 */
 	public void init() {
 		setBackground(Color.WHITE);
 		setLayout(null);
@@ -77,6 +80,9 @@ public class MinorBox extends JPanel implements Conquerable, Serializable {
 		});
 	}
 
+	/**
+	 * Called when the mouse is clicked inside this box
+	 */
 	private void mouseClicked() {
 		if (Rules.preventGambit && ! firstMove && thisType == Box.MIDDLE && minor.getBoxType() == Box.MIDDLE) {
 			// Prevent Orlin's gambit
@@ -122,10 +128,13 @@ public class MinorBox extends JPanel implements Conquerable, Serializable {
 		}
 
 		minor.triggerUpdate();
+
+		if (minor.getConquerer() != null)
+			main.getMajorGrid().repaint();
+		
 		firstMove = true;
 
 		main.logNextPlayer();
-		main.getMajorGrid().repaint();
 	}
 
 	private void drawMark(Player player, boolean fill) {

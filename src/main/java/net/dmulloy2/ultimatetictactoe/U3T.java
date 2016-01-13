@@ -39,10 +39,8 @@ import net.dmulloy2.ultimatetictactoe.types.Rules;
  */
 
 // TODO List
-// - Implement key
-// - Implement saving
-// - Figure out how to tint boxes properly
 // - Implement player customization
+// - Implement saving
 
 public class U3T {
 	private Box nextBox;
@@ -68,6 +66,9 @@ public class U3T {
 		new StartGUI(this);
 	}
 
+	/**
+	 * Actually starts the game
+	 */
 	public void start() {
 		this.majorGrid = new MajorGrid(this);
 		this.board = new U3TGUI(this);
@@ -111,6 +112,9 @@ public class U3T {
 		this.nextBox = nextBox;
 	}
 
+	/**
+	 * Switches to the next player
+	 */
 	public void nextPlayer() {
 		this.player = player == Player.PLAYER_1 ? Player.PLAYER_2 : Player.PLAYER_1;
 	}
@@ -138,10 +142,19 @@ public class U3T {
 		board.logInBox(message);
 	}
 
+	/**
+	 * Logs a message to a pop-up dialog box
+	 * @param level Logging level, can be INFO or SEVERE
+	 * @param message Message to log
+	 */
 	public void log(Level level, String message) {
 		JOptionPane.showMessageDialog(null, message, "Ultimate Tic-Tac-Toe", level == Level.SEVERE ? JOptionPane.ERROR_MESSAGE : JOptionPane.INFORMATION_MESSAGE, null);
 	}
 
+	/**
+	 * Saves the game to disk.
+	 * TODO Implement this
+	 */
 	public void save() {
 		
 	}
