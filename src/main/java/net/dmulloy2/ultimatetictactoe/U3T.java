@@ -21,6 +21,8 @@
  */
 package net.dmulloy2.ultimatetictactoe;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 
 import javax.swing.JOptionPane;
@@ -39,8 +41,8 @@ import net.dmulloy2.ultimatetictactoe.types.Rules;
  */
 
 // TODO List
-// - Implement player customization
 // - Implement saving
+// - Add instructions
 
 public class U3T {
 	private Box nextBox;
@@ -156,6 +158,20 @@ public class U3T {
 	 * TODO Implement this
 	 */
 	public void save() {
-		
+		Map<String, Object> data = new HashMap<>();
+
+		// Save settings
+		data.put("rules.preventGambit", Rules.preventGambit);
+		data.put("rules.allowUseOfConquered", Rules.allowUseOfConquered);
+		data.put("rules.allowCatsGame", Rules.allowCatsGame);
+
+		// Save players
+		data.put("players.1", Player.PLAYER_1.serialize());
+		data.put("players.2", Player.PLAYER_2.serialize());
+
+		// Save the board
+		data.put("grid", majorGrid.serialize());
+
+		// TODO actually save to disk
 	}
 }

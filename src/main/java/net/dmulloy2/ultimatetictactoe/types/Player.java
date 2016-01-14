@@ -22,12 +22,14 @@
 package net.dmulloy2.ultimatetictactoe.types;
 
 import java.awt.Color;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The available players in U3T
  * @author Dan Mulloy
  */
-public enum Player {
+public enum Player implements Serializable {
 	PLAYER_1("Player 1", "X", Constants.BLUE),
 	PLAYER_2("Player 2", "O", Constants.RED),
 	;
@@ -79,5 +81,14 @@ public enum Player {
 		}
 
 		return null;
+	}
+
+	@Override
+	public Map<String, Object> serialize() {
+		Map<String, Object> data = new HashMap<>();
+		data.put("name", name);
+		data.put("symbol", symbol);
+		data.put("color", color);
+		return data;
 	}
 }
