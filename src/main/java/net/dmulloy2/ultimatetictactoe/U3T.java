@@ -134,7 +134,7 @@ public class U3T {
 	}
 
 	public void logNextPlayer() {
-		String message = player.getSymbol() + "\'s turn";
+		String message = player.getName() + "\'s turn";
 		if (nextBox != null) {
 			message += " in " + nextBox;
 		}

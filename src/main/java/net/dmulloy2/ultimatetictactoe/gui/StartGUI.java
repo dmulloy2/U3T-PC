@@ -75,8 +75,10 @@ public class StartGUI extends JFrame {
 	private JTextField player2R;
 	private JTextField player2G;
 	private JTextField player2B;
-	private JTextField player2Symbol;
 	private JLabel label_2;
+	private JTextField player1Name;
+	private JTextField player2Name;
+	private JTextField player2Symbol;
 
 	private void init() {
 		try {
@@ -101,7 +103,7 @@ public class StartGUI extends JFrame {
 		});
 		
 		JPanel defaultSettings = new JPanel();
-		tabbedPane.addTab("Default", null, defaultSettings, null);
+		tabbedPane.addTab("Settings", null, defaultSettings, null);
 		
 		JPanel settingsPanel = new JPanel();
 		settingsPanel.setLayout(new BorderLayout(0, 0));
@@ -111,9 +113,12 @@ public class StartGUI extends JFrame {
 		rightPanel.setLayout(new BorderLayout(0, 0));
 
 		playerSelector = new JComboBox<String>();
-		playerSelector.addItem("Starting player");
-		playerSelector.addItem(Player.PLAYER_1.toString());
-		playerSelector.addItem(Player.PLAYER_2.toString());
+		playerSelector.setEditable(false);
+		playerSelector.addItem("Player 1 Starts");
+		playerSelector.setToolTipText("This is a vestige of the old version; unnecessary now that customization exists.");
+		//playerSelector.addItem("Starting player");
+		//playerSelector.addItem(Player.PLAYER_1.toString());
+		//playerSelector.addItem(Player.PLAYER_2.toString());
 
 		rightPanel.add(playerSelector, BorderLayout.SOUTH);
 		
@@ -189,14 +194,18 @@ public class StartGUI extends JFrame {
 
 		Color player2Default = Player.PLAYER_2.getColor();
 		player2R.setText(Integer.toString(player2Default.getRed()));
-		player2G.setText(Integer.toString(player2Default.getBlue()));
-		player2B.setText(Integer.toString(player2Default.getGreen()));
+		player2G.setText(Integer.toString(player2Default.getGreen()));
+		player2B.setText(Integer.toString(player2Default.getBlue()));
+		
+		label_2 = new JLabel("B");
+		
+		player2Name = new JTextField();
+		player2Name.setText("Player 2");
+		player2Name.setColumns(10);
 		
 		player2Symbol = new JTextField();
 		player2Symbol.setText("O");
 		player2Symbol.setColumns(10);
-		
-		label_2 = new JLabel("B");
 
 		GroupLayout player2Layout = new GroupLayout(player2Panel);
 		player2Layout.setHorizontalGroup(
@@ -204,7 +213,6 @@ public class StartGUI extends JFrame {
 				.addGroup(player2Layout.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(player2Layout.createParallelGroup(Alignment.LEADING)
-						.addComponent(player2Symbol, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE)
 						.addGroup(player2Layout.createSequentialGroup()
 							.addComponent(label, GroupLayout.PREFERRED_SIZE, 7, GroupLayout.PREFERRED_SIZE)
 							.addGap(10)
@@ -216,15 +224,25 @@ public class StartGUI extends JFrame {
 						.addGroup(player2Layout.createSequentialGroup()
 							.addComponent(label_1, GroupLayout.PREFERRED_SIZE, 7, GroupLayout.PREFERRED_SIZE)
 							.addGap(10)
-							.addComponent(player2G, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)))
+							.addComponent(player2G, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE))
+						.addGroup(player2Layout.createSequentialGroup()
+							.addComponent(player2Name, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)
+							.addGap(10)
+							.addComponent(player2Symbol, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap(26, Short.MAX_VALUE))
 		);
 		player2Layout.setVerticalGroup(
 			player2Layout.createParallelGroup(Alignment.LEADING)
 				.addGroup(player2Layout.createSequentialGroup()
 					.addGap(12)
-					.addComponent(player2Symbol, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addGap(6)
+					.addGroup(player2Layout.createParallelGroup(Alignment.LEADING)
+						.addGroup(player2Layout.createSequentialGroup()
+							.addGap(2)
+							.addComponent(player2Name, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addGroup(player2Layout.createSequentialGroup()
+							.addGap(2)
+							.addComponent(player2Symbol, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(player2Layout.createParallelGroup(Alignment.LEADING)
 						.addGroup(player2Layout.createSequentialGroup()
 							.addGap(3)
@@ -270,17 +288,25 @@ public class StartGUI extends JFrame {
 
 		Color player1Default = Player.PLAYER_1.getColor();
 		player1R.setText(Integer.toString(player1Default.getRed()));
-		player1G.setText(Integer.toString(player1Default.getBlue()));
-		player1B.setText(Integer.toString(player1Default.getGreen()));
+		player1G.setText(Integer.toString(player1Default.getGreen()));
+		player1B.setText(Integer.toString(player1Default.getBlue()));
+		
+		player1Name = new JTextField();
+		player1Name.setText("Player 1");
+		player1Name.setColumns(10);
 
 		GroupLayout player1Layout = new GroupLayout(player1Panel);
 		player1Layout.setHorizontalGroup(
 			player1Layout.createParallelGroup(Alignment.LEADING)
 				.addGroup(player1Layout.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(player1Layout.createParallelGroup(Alignment.TRAILING, false)
-						.addComponent(player1Symbol, Alignment.LEADING)
+					.addGroup(player1Layout.createParallelGroup(Alignment.TRAILING)
+						.addGroup(player1Layout.createSequentialGroup()
+							.addContainerGap()
+							.addComponent(player1Name, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(player1Symbol, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE))
 						.addGroup(Alignment.LEADING, player1Layout.createSequentialGroup()
+							.addContainerGap()
 							.addGroup(player1Layout.createParallelGroup(Alignment.LEADING)
 								.addComponent(lblR)
 								.addGroup(player1Layout.createSequentialGroup()
@@ -308,7 +334,9 @@ public class StartGUI extends JFrame {
 			player1Layout.createParallelGroup(Alignment.LEADING)
 				.addGroup(player1Layout.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(player1Symbol, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addGroup(player1Layout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(player1Symbol, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(player1Name, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(player1Layout.createParallelGroup(Alignment.LEADING)
 						.addGroup(player1Layout.createSequentialGroup()
@@ -334,16 +362,17 @@ public class StartGUI extends JFrame {
 
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
 		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+			groupLayout.createParallelGroup(Alignment.TRAILING)
+				.addGroup(groupLayout.createSequentialGroup()
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-						.addComponent(titleField, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 331, Short.MAX_VALUE)
+						.addComponent(titleField, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 331, GroupLayout.PREFERRED_SIZE)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addContainerGap()
 							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 								.addComponent(btnStart)
-								.addComponent(tabbedPane, GroupLayout.PREFERRED_SIZE, 321, GroupLayout.PREFERRED_SIZE))))
-					.addGap(47))
+								.addComponent(tabbedPane, GroupLayout.PREFERRED_SIZE, 321, GroupLayout.PREFERRED_SIZE))
+							.addGap(0, 0, Short.MAX_VALUE)))
+					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -359,6 +388,24 @@ public class StartGUI extends JFrame {
 		
 		JPanel continuePanel = new JPanel();
 		tabbedPane.addTab("Continue", null, continuePanel, "Continue a previously saved game");
+		
+		JLabel lblWhenCompletedThis = new JLabel("When completed, this will allow you to continue saved games :)");
+		GroupLayout gl_continuePanel = new GroupLayout(continuePanel);
+		gl_continuePanel.setHorizontalGroup(
+			gl_continuePanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(Alignment.TRAILING, gl_continuePanel.createSequentialGroup()
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addComponent(lblWhenCompletedThis)
+					.addContainerGap())
+		);
+		gl_continuePanel.setVerticalGroup(
+			gl_continuePanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_continuePanel.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblWhenCompletedThis)
+					.addContainerGap(72, Short.MAX_VALUE))
+		);
+		continuePanel.setLayout(gl_continuePanel);
 		pack();
 	}
 
@@ -367,29 +414,55 @@ public class StartGUI extends JFrame {
 		Rules.allowUseOfConquered = conqueredCheckBox.isSelected();
 		Rules.allowCatsGame = catsGameCheckBox.isSelected();
 
-		Rules.starter = Player.fromString((String) playerSelector.getSelectedItem());
+		/*Rules.starter = Player.fromString((String) playerSelector.getSelectedItem());
 		if (Rules.starter == null) {
 			main.error("You must select a starting player!");
 			return;
+		}*/
+
+		// For simplicity's sake, player 1 will always start
+		Rules.starter = Player.PLAYER_1;
+
+		String name1 = player1Name.getText();
+		if (!name1.isEmpty()) {
+			Player.PLAYER_1.setName(name1);
+		}
+
+		String name2 = player2Name.getText();
+		if (!name2.isEmpty()) {
+			Player.PLAYER_2.setName(name2);
 		}
 
 		String symbol1 = player1Symbol.getText();
-		if (symbol1.length() != 1) {
-			main.error("Player 1's symbol can only be one character!");
-			return;
+		if (symbol1.length() == 1) {
+			Player.PLAYER_1.setSymbol(symbol1);
 		}
 
 		String symbol2 = player2Symbol.getText();
-		if (symbol2.length() != 1) {
-			main.error("Player 2's symbol can only be one character!");
+		if (symbol2.length() == 1) {
+			Player.PLAYER_2.setSymbol(symbol2);
+		}
+
+		try {
+			Player.PLAYER_1.setColor(parseRGB(player1R.getText(), player1G.getText(), player1B.getText()));
+		} catch (NumberFormatException ex) {
+			main.error("One of Player 1's RGB values was entered incorrectly!");
 			return;
 		}
 
-		Player.PLAYER_1.setSymbol(player1Symbol.getText());
-		Player.PLAYER_2.setSymbol(player2Symbol.getText());
+		try {
+			Player.PLAYER_2.setColor(parseRGB(player2R.getText(), player2G.getText(), player2B.getText()));
+		} catch (NumberFormatException ex) {
+			main.error("One of Player 2's RGB values was entered incorrectly!");
+			return;
+		}
 
 		main.start();
 		dispose();
+	}
+
+	private Color parseRGB(String r, String g, String b) {
+		return new Color(rgbStandard(Integer.parseInt(r)), rgbStandard(Integer.parseInt(g)), rgbStandard(Integer.parseInt(b)));
 	}
 
 	private int rgbStandard(int i) {

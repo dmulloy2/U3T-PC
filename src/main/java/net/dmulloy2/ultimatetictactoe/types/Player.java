@@ -28,16 +28,26 @@ import java.awt.Color;
  * @author Dan Mulloy
  */
 public enum Player {
-	PLAYER_1("X", Constants.BLUE),
-	PLAYER_2("O", Constants.RED),
+	PLAYER_1("Player 1", "X", Constants.BLUE),
+	PLAYER_2("Player 2", "O", Constants.RED),
 	;
 
+	private String name;
 	private String symbol;
 	private Color color;
 
-	private Player(String defSymbol, Color defColor) {
+	private Player(String defName, String defSymbol, Color defColor) {
+		this.name = defName;
 		this.symbol = defSymbol;
 		this.color = defColor;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getSymbol() {
