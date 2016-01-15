@@ -40,8 +40,12 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.UIManager;
 
 import net.dmulloy2.ultimatetictactoe.U3T;
+import net.dmulloy2.ultimatetictactoe.types.Instructions;
 import net.dmulloy2.ultimatetictactoe.types.Player;
 import net.dmulloy2.ultimatetictactoe.types.Rules;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import java.awt.Font;
 
 /**
  * @author Dan Mulloy
@@ -79,6 +83,7 @@ public class StartGUI extends JFrame {
 	private JTextField player1Name;
 	private JTextField player2Name;
 	private JTextField player2Symbol;
+	private JScrollPane scrollPane;
 
 	private void init() {
 		try {
@@ -387,7 +392,7 @@ public class StartGUI extends JFrame {
 		getContentPane().setLayout(groupLayout);
 		
 		JPanel continuePanel = new JPanel();
-		tabbedPane.addTab("Continue", null, continuePanel, "Continue a previously saved game");
+		//tabbedPane.addTab("Continue", null, continuePanel, "Continue a previously saved game");
 		
 		JLabel lblWhenCompletedThis = new JLabel("When completed, this will allow you to continue saved games :)");
 		GroupLayout gl_continuePanel = new GroupLayout(continuePanel);
@@ -406,6 +411,22 @@ public class StartGUI extends JFrame {
 					.addContainerGap(72, Short.MAX_VALUE))
 		);
 		continuePanel.setLayout(gl_continuePanel);
+
+		JPanel instructionsPanel = new JPanel();
+		tabbedPane.addTab("Instructions", null, instructionsPanel, "Read game instructions");
+		instructionsPanel.setLayout(null);
+		
+		scrollPane = new JScrollPane();
+		scrollPane.setBounds(0, 0, 316, 97);
+		instructionsPanel.add(scrollPane);
+		
+		JTextArea textArea = new JTextArea();
+		textArea.setWrapStyleWord(true);
+		textArea.setFont(new Font("Calibri", Font.PLAIN, 11));
+		textArea.setLineWrap(true);
+		textArea.setText(Instructions.getInstructions());
+
+		scrollPane.setViewportView(textArea);
 		pack();
 	}
 

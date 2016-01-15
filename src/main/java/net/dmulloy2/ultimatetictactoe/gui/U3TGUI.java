@@ -32,6 +32,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
@@ -53,6 +54,9 @@ public class U3TGUI extends JFrame {
 
 	private JPanel keyPanel;
 	private Key key;
+	private JMenu mnAbout;
+	private JMenuItem mntmInstructions;
+	private JMenuItem mntmCredits;
 
 	public U3TGUI(final U3T main) {
 		super("Ultimate TicTacToe");
@@ -79,6 +83,7 @@ public class U3TGUI extends JFrame {
 		// ---- Menu Bar
 		menuBar = new JMenuBar();
 		JMenu fileMenu = new JMenu("File");
+		fileMenu.setIcon(null);
 		JMenuItem save = new JMenuItem("Save");
 		save.addActionListener(new ActionListener() {
 			@Override
@@ -88,6 +93,7 @@ public class U3TGUI extends JFrame {
 		});
 
 		JMenuItem exit = new JMenuItem("Exit");
+		exit.setSelectedIcon(null);
 		exit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
@@ -95,10 +101,32 @@ public class U3TGUI extends JFrame {
 			}
 		});
 
-		fileMenu.add(save);
+		//fileMenu.add(save);
 		fileMenu.add(exit);
 		menuBar.add(fileMenu);
 		setJMenuBar(menuBar);
+		
+		mnAbout = new JMenu("About");
+		menuBar.add(mnAbout);
+		
+		mntmInstructions = new JMenuItem("Instructions");
+		mntmInstructions.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				new InstructionGUI();
+			}
+		});
+
+		mnAbout.add(mntmInstructions);
+		
+		mntmCredits = new JMenuItem("Credits");
+		mntmCredits.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				JOptionPane.showMessageDialog(U3TGUI.this, "Author: Dan Mulloy\nIdeas and Creative Support: PJ McFarlane");
+			}
+		});
+		mnAbout.add(mntmCredits);
 		// ----
 
 		// Maximize it

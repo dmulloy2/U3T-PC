@@ -1,0 +1,23 @@
+How does the game work?
+
+The game is played on a 9x9 grid (called the board). Within each box of the board contains a smaller 9x9 grid (called grids), for a total of 81 individual boxes. Ultimate Tic Tac Toe works just like regular Tic Tac Toe, in that players try to match three in a row to win grids, but whichever box a player moves corresponds to which grid the other player can make their next move.
+
+So if Player 1 makes their first move in the upper left grid, in the bottom middle box, Player 2 must make their next move in the bottom middle grid. If you get three boxes in a row, you win that grid.
+
+The objective of the game is to conquer the board by winning three grids in a row.
+
+What happens if I get sent to a grid that has already been conquered?
+
+If your opponent sends you to a grid that has already been won, you must still play in that grid, in a box that hasn’t already been played in. This means that it is a good idea to send your opponent to an already conquered grid, since there is no way for them to conquer it.
+
+But what if my opponent sends me to a completely full grid in which all nine boxes have been played in already?
+
+Then congratulations! You get a free move wherever you want on the board.
+
+Hooray!
+
+Remember, you need to consider where you will send your opponent when deciding where to make your next move. You don’t want to send your opponent into a grid where they will be able to send you to a conquered grid. This extra level of strategy involved is what makes Ultimate Tic Tac Toe so much better than normal Tic Tac Toe.
+
+What is Orlin’s Gambit?
+
+Orlin’s Gambit is a cheap strategy wherein one player plays in the middle box of the middle grid, forcing Player 2 to play in the middle. Then, Player 1 proceeds to play in the middle box of every other grid, sacrificing the middle but gaining the middle square of every other grid. It’s disabled by default in the settings and I don’t know why anyone would want to enable it but, like, you can if you want to, I guess. This is America after all.

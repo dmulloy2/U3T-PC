@@ -132,7 +132,7 @@ public class U3T {
 	}
 
 	public void win(Player player) {
-		info(player + " has won!");
+		info(player.getName() + " has won!");
 	}
 
 	public void logNextPlayer() {
