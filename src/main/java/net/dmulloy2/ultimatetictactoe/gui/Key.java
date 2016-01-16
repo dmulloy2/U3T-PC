@@ -37,8 +37,8 @@ public class Key extends MinorGrid {
 
 	private boolean exists = false;
 
-	public Key(U3T main, Box boxType, int buffer) {
-		super(main, boxType, buffer);
+	public Key(U3T main, Box boxType) {
+		super(main, boxType);
 
 		addMouseListener(new MouseAdapter() {
 			@Override

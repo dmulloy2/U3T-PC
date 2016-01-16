@@ -80,6 +80,34 @@ public class MinorBox extends JPanel implements Conquerable, Serializable {
 		});
 	}
 
+	public void load(Map<String, Object> data) {
+		setBackground(Color.WHITE);
+		setLayout(null);
+
+		label = new JLabel();
+		add(label);
+
+		addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent event) {
+				MinorBox.this.mouseClicked();
+			}
+		});
+
+		if (data.containsKey("conquerer")) {
+			this.conquerer = Player.valueOf((String) data.get("conquerer"));
+		}
+	}
+
+	public void finishLoad() {
+		if (conquerer != null) {
+			drawMark(conquerer, false);
+			minor.triggerUpdate();
+			main.getMajorGrid().repaint();
+			firstMove = true;
+		}
+	}
+
 	/**
 	 * Called when the mouse is clicked inside this box
 	 */
@@ -109,7 +137,7 @@ public class MinorBox extends JPanel implements Conquerable, Serializable {
 				return;
 			}
 
-			main.error(conquerer + " has already conquered this box!");
+			main.error(conquerer.getName() + " has already conquered this box!");
 			return;
 		}
 
@@ -179,7 +207,9 @@ public class MinorBox extends JPanel implements Conquerable, Serializable {
 	@Override
 	public Map<String, Object> serialize() {
 		Map<String, Object> map = new LinkedHashMap<>();
-		map.put("conquerer", conquerer.name());
+		if (conquerer != null) {
+			map.put("conquerer", conquerer.name());
+		}
 		return map;
 	}
 

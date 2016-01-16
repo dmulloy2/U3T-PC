@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>net.dmulloy2</groupId>
   <artifactId>ultimatetictactoe</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0</version>
   <name>UltimateTicTacToe</name>
 
   <properties>
@@ -38,6 +38,28 @@
           <finalName>UltimateTicTacToe</finalName>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>2.3</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <createDependencyReducedPom>false</createDependencyReducedPom>
+              <minimizeJar>true</minimizeJar>
+              <artifactSet>
+                <includes>
+                  <include>org.yaml*</include>
+                </includes>
+              </artifactSet>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
 
     <resources>
@@ -52,4 +74,13 @@
       </resource>
     </resources>
   </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.yaml</groupId>
+      <artifactId>snakeyaml</artifactId>
+      <version>1.15</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
 </project>

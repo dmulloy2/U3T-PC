@@ -23,7 +23,7 @@ package net.dmulloy2.ultimatetictactoe.gui;
 
 import java.awt.Color;
 import java.awt.GridLayout;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JPanel;
@@ -67,11 +67,37 @@ public class MajorGrid extends JPanel implements Conquerable, Serializable {
 		for (int x = 0; x < minor.length; x++) {
 			for (int y = 0; y < minor.length; y++) {
 				// The grid layout goes column first, just remember to switch y and x
-				MinorGrid grid = new MinorGrid(main, Box.fromCoords(y, x), main.getBuffer());
+				MinorGrid grid = new MinorGrid(main, Box.fromCoords(y, x));
 				add(grid);
 
 				grid.init();
 				minor[x][y] = grid;
+			}
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public void load(Map<String, Object> data) {
+		GridLayout layout = new GridLayout(3, 3, buffer, buffer);
+		setLayout(layout);
+
+		setBackground(Color.DARK_GRAY);
+
+		for (int x = 0; x < minor.length; x++) {
+			for (int y = 0; y < minor.length; y++) {
+				MinorGrid grid = new MinorGrid(main, Box.fromCoords(y, x));
+				add(grid);
+
+				grid.load((Map<String, Object>) data.get("minor." + x + "." + y));
+				minor[x][y] = grid;
+			}
+		}
+	}
+
+	public void finishLoad() {
+		for (int x = 0; x < minor.length; x++) {
+			for (int y = 0; y < minor.length; y++) {
+				minor[x][y].finishLoad();
 			}
 		}
 	}
@@ -147,7 +173,13 @@ public class MajorGrid extends JPanel implements Conquerable, Serializable {
 
 	@Override
 	public Map<String, Object> serialize() {
-		Map<String, Object> map = new LinkedHashMap<>();
+		Map<String, Object> map = new HashMap<>();
+		for (int x = 0; x < minor.length; x++) {
+			for (int y = 0; y < minor.length; y++) {
+				map.put("minor." + x + "." + y, minor[x][y].serialize());
+			}
+		}
+
 		return map;
 	}
 }

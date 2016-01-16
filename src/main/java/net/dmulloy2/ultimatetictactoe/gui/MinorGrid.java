@@ -25,6 +25,8 @@ import java.awt.Color;
 import java.awt.ComponentOrientation;
 import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JPanel;
 
@@ -33,12 +35,13 @@ import net.dmulloy2.ultimatetictactoe.internals.Conquerable;
 import net.dmulloy2.ultimatetictactoe.types.Box;
 import net.dmulloy2.ultimatetictactoe.types.Combination;
 import net.dmulloy2.ultimatetictactoe.types.Player;
+import net.dmulloy2.ultimatetictactoe.types.Serializable;
 
 /**
  * Minor Tic-Tac-Toe boards
  * @author Dan Mulloy
  */
-public class MinorGrid extends JPanel implements Conquerable {
+public class MinorGrid extends JPanel implements Conquerable, Serializable {
 	private static final long serialVersionUID = - 7818649985025911957L;
 
 	private int buffer;
@@ -50,11 +53,11 @@ public class MinorGrid extends JPanel implements Conquerable {
 
 	protected final U3T main;
 
-	public MinorGrid(U3T main, Box boxType, int buffer) {
+	public MinorGrid(U3T main, Box boxType) {
 		super();
 
 		this.main = main;
-		this.buffer = buffer;
+		this.buffer = main.getBuffer();
 		this.boxes = new MinorBox[3][3];
 		this.boxType = boxType;
 	}
@@ -71,6 +74,31 @@ public class MinorGrid extends JPanel implements Conquerable {
 
 				box.init();
 				boxes[x][y] = box;
+			}
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public void load(Map<String, Object> data) {
+		GridLayout layout = new GridLayout(3, 3, buffer, buffer);
+		applyComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+		setLayout(layout);
+
+		for (int x = 0; x < boxes.length; x++) {
+			for (int y = 0; y < boxes.length; y++) {
+				MinorBox box = new MinorBox(main, this, Box.fromCoords(y, x));
+				add(box);
+
+				box.load((Map<String, Object>) data.get("boxes." + x + "." + y));
+				boxes[x][y] = box;
+			}
+		}
+	}
+
+	public void finishLoad() {
+		for (int x = 0; x < boxes.length; x++) {
+			for (int y = 0; y < boxes.length; y++) {
+				boxes[x][y].finishLoad();
 			}
 		}
 	}
@@ -107,7 +135,7 @@ public class MinorGrid extends JPanel implements Conquerable {
 	@Override
 	public void paint(Graphics graphics) {
 		super.paint(graphics);
-		if (conquerer == null) {
+		if (conquerer == null || graphics == null) {
 			return;
 		}
 
@@ -145,5 +173,17 @@ public class MinorGrid extends JPanel implements Conquerable {
 
 	public Color getTint() {
 		return tint;
+	}
+
+	@Override
+	public Map<String, Object> serialize() {
+		Map<String, Object> map = new HashMap<>();
+		for (int x = 0; x < boxes.length; x++) {
+			for (int y = 0; y < boxes.length; y++) {
+				map.put("boxes." + x + "." + y, boxes[x][y].serialize());
+			}
+		}
+
+		return map;
 	}
 }

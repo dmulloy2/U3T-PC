@@ -60,6 +60,8 @@ public enum Combination {
 	}
 
 	public static <T extends Conquerable> Combination threeInARow(Player player, T[][] boxes) {
+		if (boxes == null) return null;
+
 		Combination[] combinations = Combination.values();
 
 		comboLabel: for (Combination combination : combinations) {
@@ -67,7 +69,7 @@ public enum Combination {
 
 			for (Box box : required) {
 				T check = boxes[box.getX()][box.getY()];
-				if (check.getConquerer() != player) {
+				if (check != null && check.getConquerer() != player) {
 					continue comboLabel;
 				}
 			}

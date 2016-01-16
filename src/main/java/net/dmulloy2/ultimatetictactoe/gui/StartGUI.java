@@ -23,6 +23,7 @@ package net.dmulloy2.ultimatetictactoe.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -34,18 +35,18 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import net.dmulloy2.ultimatetictactoe.U3T;
 import net.dmulloy2.ultimatetictactoe.types.Instructions;
 import net.dmulloy2.ultimatetictactoe.types.Player;
 import net.dmulloy2.ultimatetictactoe.types.Rules;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import java.awt.Font;
 
 /**
  * @author Dan Mulloy
@@ -163,7 +164,7 @@ public class StartGUI extends JFrame {
 
 		tabbedPane.addTab("Custom", null, customSettings, "Customize the players in the game");
 		
-		JPanel player1Panel = new JPanel();		
+		JPanel player1Panel = new JPanel();
 		JPanel player2Panel = new JPanel();
 
 		GroupLayout customSettingsLayout = new GroupLayout(customSettings);
@@ -390,27 +391,6 @@ public class StartGUI extends JFrame {
 					.addContainerGap())
 		);
 		getContentPane().setLayout(groupLayout);
-		
-		JPanel continuePanel = new JPanel();
-		//tabbedPane.addTab("Continue", null, continuePanel, "Continue a previously saved game");
-		
-		JLabel lblWhenCompletedThis = new JLabel("When completed, this will allow you to continue saved games :)");
-		GroupLayout gl_continuePanel = new GroupLayout(continuePanel);
-		gl_continuePanel.setHorizontalGroup(
-			gl_continuePanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_continuePanel.createSequentialGroup()
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-					.addComponent(lblWhenCompletedThis)
-					.addContainerGap())
-		);
-		gl_continuePanel.setVerticalGroup(
-			gl_continuePanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_continuePanel.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(lblWhenCompletedThis)
-					.addContainerGap(72, Short.MAX_VALUE))
-		);
-		continuePanel.setLayout(gl_continuePanel);
 
 		JPanel instructionsPanel = new JPanel();
 		tabbedPane.addTab("Instructions", null, instructionsPanel, "Read game instructions");
@@ -427,6 +407,48 @@ public class StartGUI extends JFrame {
 		textArea.setText(Instructions.getInstructions());
 
 		scrollPane.setViewportView(textArea);
+		
+		JPanel continuePanel = new JPanel();
+		tabbedPane.addTab("Continue", null, continuePanel, "Continue a previously saved game");
+		
+		JButton btnLoadSavedGame = new JButton("Load Saved Game");
+		btnLoadSavedGame.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				String result = main.load();
+				if (result != null) {
+					main.error("Failed to load from disk: " + result);
+					return;
+				}
+
+				dispose();
+
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						main.finishLoad();
+					}
+				});
+			}
+		});
+
+		GroupLayout continuePanelLayout = new GroupLayout(continuePanel);
+		continuePanelLayout.setHorizontalGroup(
+			continuePanelLayout.createParallelGroup(Alignment.TRAILING)
+				.addGroup(Alignment.LEADING, continuePanelLayout.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(btnLoadSavedGame)
+					.addContainerGap(187, Short.MAX_VALUE))
+		);
+		continuePanelLayout.setVerticalGroup(
+			continuePanelLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(continuePanelLayout.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(btnLoadSavedGame)
+					.addContainerGap(60, Short.MAX_VALUE))
+		);
+		continuePanel.setLayout(continuePanelLayout);
+
 		pack();
 	}
 

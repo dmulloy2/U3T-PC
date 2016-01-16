@@ -40,6 +40,7 @@ import javax.swing.SwingUtilities;
 import net.dmulloy2.ultimatetictactoe.U3T;
 import net.dmulloy2.ultimatetictactoe.types.Box;
 import net.dmulloy2.ultimatetictactoe.types.MathUtil;
+import net.dmulloy2.ultimatetictactoe.types.Versioning;
 
 /**
  * @author Dan Mulloy
@@ -88,7 +89,12 @@ public class U3TGUI extends JFrame {
 		save.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				main.save();
+				String result = main.save();
+				if (result != null) {
+					main.error("Failed to save game: " + result);
+				} else {
+					main.info("Game saved to disk!");
+				}
 			}
 		});
 
@@ -101,7 +107,7 @@ public class U3TGUI extends JFrame {
 			}
 		});
 
-		//fileMenu.add(save);
+		fileMenu.add(save);
 		fileMenu.add(exit);
 		menuBar.add(fileMenu);
 		setJMenuBar(menuBar);
@@ -123,14 +129,12 @@ public class U3TGUI extends JFrame {
 		mntmCredits.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				JOptionPane.showMessageDialog(U3TGUI.this, "Author: Dan Mulloy\nIdeas and Creative Support: PJ McFarlane");
+				JOptionPane.showMessageDialog(U3TGUI.this, Versioning.NAME + " v" + Versioning.VERSION + "\n"
+						+ "By: " + Versioning.AUTHORS);
 			}
 		});
 		mnAbout.add(mntmCredits);
 		// ----
-
-		// Maximize it
-		//setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
 
 		Rectangle resolution = getGraphicsConfiguration().getBounds();
 
@@ -139,13 +143,13 @@ public class U3TGUI extends JFrame {
 		int width = MathUtil.multipleInBounds(75, (int) resolution.getWidth() - 100,
 				(int) resolution.getHeight() - 100);
 		grid.setBounds(0, 0, width, width);
-		grid.init();
+		//grid.init();
 
 		// Add the main grid
 		getContentPane().add(grid);
 
 		// Add the key for now, we don't know enough to actually do anything with it for now.
-		key = new Key(main, Box.MIDDLE, 10);
+		key = new Key(main, Box.MIDDLE);
 		key.setVisible(false);
 
 		keyPanel = new JPanel();
@@ -175,7 +179,7 @@ public class U3TGUI extends JFrame {
 	}
 
 	public void createKey() {
-		// Make it slightly to the right of the middle right box, like 1/3rd of the free width
+		// Make it slightly to the right of the middle right box, like half of the free width
 		Rectangle resolution = getGraphicsConfiguration().getBounds();
 		int gridWidth = main.getMajorGrid().getWidth();
 		int freeWidth = (int) resolution.getWidth() - gridWidth;
@@ -183,7 +187,7 @@ public class U3TGUI extends JFrame {
 		MinorGrid minor = main.getMajorGrid().getGrid(Box.MIDDLE_RIGHT);
 		Rectangle bounds = minor.getBounds();
 
-		int x = (int) (bounds.getX() + (freeWidth / 3)) - 10;
+		int x = (int) (bounds.getX() + (freeWidth / 2)) - 10;
 		int y = (int) bounds.getY() - 10;
 		int width = (int) bounds.getWidth() + 20;
 
@@ -194,6 +198,7 @@ public class U3TGUI extends JFrame {
 		key.init();
 		key.setVisible(true);
 
-		setSize(x + width + 30, getHeight());
+		if (getExtendedState() != MAXIMIZED_BOTH)
+			setSize(x + width + 40, getHeight());
 	}
 }

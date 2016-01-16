@@ -44,6 +44,12 @@ public enum Player implements Serializable {
 		this.color = defColor;
 	}
 
+	public void load(Map<String, Object> data) {
+		this.name = (String) data.get("name");
+		this.symbol = (String) data.get("symbol");
+		this.color = new Color((int) data.get("color"));
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -88,7 +94,7 @@ public enum Player implements Serializable {
 		Map<String, Object> data = new HashMap<>();
 		data.put("name", name);
 		data.put("symbol", symbol);
-		data.put("color", color);
+		data.put("color", color.getRGB());
 		return data;
 	}
 }

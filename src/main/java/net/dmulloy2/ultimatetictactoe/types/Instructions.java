@@ -4,6 +4,7 @@
 package net.dmulloy2.ultimatetictactoe.types;
 
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
@@ -24,15 +25,23 @@ public class Instructions {
 
 	private static void loadInstructions() {
 		try (Closer closer = Closer.create()) {
-			InputStream is = closer.register(Instructions.class.getResourceAsStream("instructions.txt"));
-			InputStreamReader isr = closer.register(new InputStreamReader(is));
-			BufferedReader br = closer.register(new BufferedReader(isr));
+			BufferedReader br = null;
+
+			InputStream is = Instructions.class.getResourceAsStream("/instructions.txt");
+			if (is != null) {
+				closer.register(is);
+				InputStreamReader isr = closer.register(new InputStreamReader(is, "UTF-8"));
+				br = closer.register(new BufferedReader(isr));
+			} else {
+				FileReader fr = closer.register(new FileReader("instructions.txt"));
+				br = closer.register(new BufferedReader(fr));
+			}
 
 			StringBuilder instructions = new StringBuilder();
 
 			String line = null;
 			while ((line = br.readLine()) != null) {
-				instructions.append(line);
+				instructions.append(line + "\n");
 			}
 
 			Instructions.instructions = instructions.toString();
