@@ -19,17 +19,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package net.dmulloy2.ultimatetictactoe.types;
-
-import java.awt.Color;
+package net.dmulloy2.ultimatetictactoe.internals;
 
 /**
  * @author Dan Mulloy
  */
-public class Constants {
-	public static final Color RED = new Color(179, 0, 0);
-	public static final Color FADED_RED = new Color(179, 0, 0, 100);
+public class Versioning {
+	public static String NAME = "Ultimate TicTacToe";
+	public static String AUTHORS = "Dan Mulloy and PJ McFarlane";
+	public static String VERSION = getVersion();
+	public static String YEAR = "2016";
 
-	public static final Color BLUE = new Color(0, 0, 179);
-	public static final Color FADED_BLUE = new Color(0, 0, 179, 100);
+	private static String getVersion() {
+		String version = Versioning.class.getPackage().getImplementationVersion();
+		return version != null ? version : "1.0";
+	}
 }

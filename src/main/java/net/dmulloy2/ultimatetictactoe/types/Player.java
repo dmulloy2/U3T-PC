@@ -30,8 +30,8 @@ import java.util.Map;
  * @author Dan Mulloy
  */
 public enum Player implements Serializable {
-	PLAYER_1("Player 1", "X", Constants.BLUE),
-	PLAYER_2("Player 2", "O", Constants.RED),
+	PLAYER_1("Player 1", "X", new Color(179, 0, 0)),
+	PLAYER_2("Player 2", "O", new Color(0, 0, 179)),
 	;
 
 	private String name;
@@ -76,7 +76,7 @@ public enum Player implements Serializable {
 
 	@Override
 	public String toString() {
-		return symbol + " (Color: " + (color == Constants.BLUE ? "blue" : "red") + ")";
+		return "Player[name=" + name + ", symbol=" + symbol + ", color=" + color.toString() + "]";
 	}
 
 	public static Player fromString(String string) {

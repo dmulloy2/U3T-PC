@@ -28,7 +28,7 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import net.dmulloy2.ultimatetictactoe.types.Instructions;
+import net.dmulloy2.ultimatetictactoe.internals.Instructions;
 
 /**
  * Basic standalone GUI for displaying instructions.

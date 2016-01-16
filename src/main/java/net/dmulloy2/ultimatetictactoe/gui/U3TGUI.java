@@ -38,9 +38,9 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import net.dmulloy2.ultimatetictactoe.U3T;
+import net.dmulloy2.ultimatetictactoe.internals.Versioning;
 import net.dmulloy2.ultimatetictactoe.types.Box;
-import net.dmulloy2.ultimatetictactoe.types.MathUtil;
-import net.dmulloy2.ultimatetictactoe.types.Versioning;
+import net.dmulloy2.ultimatetictactoe.util.MathUtil;
 
 /**
  * The main U3T GUI

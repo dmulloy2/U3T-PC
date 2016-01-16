@@ -21,17 +21,16 @@
  */
 package net.dmulloy2.ultimatetictactoe.types;
 
+
 /**
+ * Represents something that can be conquered by a {@link Player}
  * @author Dan Mulloy
  */
-public class Versioning {
-	public static String NAME = "Ultimate TicTacToe";
-	public static String AUTHORS = "Dan Mulloy and PJ McFarlane";
-	public static String VERSION = getVersion();
-	public static String YEAR = "2016";
+public interface Conquerable {
 
-	private static String getVersion() {
-		String version = Versioning.class.getPackage().getImplementationVersion();
-		return version != null ? version : "1.0";
-	}
+	/**
+	 * Gets the conquerer of this object.
+	 * @return Conquerer, or null if unconquered
+	 */
+	public Player getConquerer();
 }

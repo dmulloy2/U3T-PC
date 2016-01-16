@@ -44,7 +44,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import net.dmulloy2.ultimatetictactoe.U3T;
-import net.dmulloy2.ultimatetictactoe.types.Instructions;
+import net.dmulloy2.ultimatetictactoe.internals.Instructions;
 import net.dmulloy2.ultimatetictactoe.types.Player;
 import net.dmulloy2.ultimatetictactoe.types.Rules;
 

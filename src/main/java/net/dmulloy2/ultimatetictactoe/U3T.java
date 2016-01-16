@@ -42,9 +42,9 @@ import net.dmulloy2.ultimatetictactoe.gui.StartGUI;
 import net.dmulloy2.ultimatetictactoe.gui.U3TGUI;
 import net.dmulloy2.ultimatetictactoe.internals.U3Thread;
 import net.dmulloy2.ultimatetictactoe.types.Box;
-import net.dmulloy2.ultimatetictactoe.types.Closer;
 import net.dmulloy2.ultimatetictactoe.types.Player;
 import net.dmulloy2.ultimatetictactoe.types.Rules;
+import net.dmulloy2.ultimatetictactoe.util.Closer;
 
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.SafeConstructor;

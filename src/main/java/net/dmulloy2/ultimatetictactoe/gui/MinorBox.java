@@ -32,8 +32,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import net.dmulloy2.ultimatetictactoe.U3T;
-import net.dmulloy2.ultimatetictactoe.internals.Conquerable;
 import net.dmulloy2.ultimatetictactoe.types.Box;
+import net.dmulloy2.ultimatetictactoe.types.Conquerable;
 import net.dmulloy2.ultimatetictactoe.types.Player;
 import net.dmulloy2.ultimatetictactoe.types.Rules;
 import net.dmulloy2.ultimatetictactoe.types.Serializable;

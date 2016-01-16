@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package net.dmulloy2.ultimatetictactoe.types;
+package net.dmulloy2.ultimatetictactoe.util;
 
 /**
  * @author Dan Mulloy

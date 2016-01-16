@@ -19,12 +19,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package net.dmulloy2.ultimatetictactoe.types;
+package net.dmulloy2.ultimatetictactoe.internals;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+
+import net.dmulloy2.ultimatetictactoe.util.Closer;
 
 /**
  * @author Dan Mulloy

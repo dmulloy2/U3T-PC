@@ -30,7 +30,6 @@ import static net.dmulloy2.ultimatetictactoe.types.Box.MIDDLE_RIGHT;
 import static net.dmulloy2.ultimatetictactoe.types.Box.TOP_LEFT;
 import static net.dmulloy2.ultimatetictactoe.types.Box.TOP_MIDDLE;
 import static net.dmulloy2.ultimatetictactoe.types.Box.TOP_RIGHT;
-import net.dmulloy2.ultimatetictactoe.internals.Conquerable;
 
 /**
  * A list of all the possible combinations of Tic-Tac-Toe
