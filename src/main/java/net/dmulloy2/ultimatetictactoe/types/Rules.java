@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2015 Dan Mulloy
+ * Copyright (c) 2016 Dan Mulloy
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,6 +22,7 @@
 package net.dmulloy2.ultimatetictactoe.types;
 
 /**
+ * Basic configurable rules for the game
  * @author Dan Mulloy
  */
 public class Rules {
