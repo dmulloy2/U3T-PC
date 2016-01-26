@@ -86,7 +86,10 @@ public class U3TGUI extends JFrame {
 		menuBar = new JMenuBar();
 		JMenu fileMenu = new JMenu("File");
 		fileMenu.setIcon(null);
+
 		JMenuItem save = new JMenuItem("Save");
+		save.setIcon(null);
+
 		save.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
@@ -99,8 +102,19 @@ public class U3TGUI extends JFrame {
 			}
 		});
 
+		JMenuItem undo = new JMenuItem("Undo");
+		undo.setIcon(null);
+
+		undo.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				main.undo();
+			}
+		});
+
 		JMenuItem exit = new JMenuItem("Exit");
-		exit.setSelectedIcon(null);
+		exit.setIcon(null);
+
 		exit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {

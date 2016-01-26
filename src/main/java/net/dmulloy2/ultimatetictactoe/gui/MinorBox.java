@@ -162,6 +162,7 @@ public class MinorBox extends JPanel implements Conquerable, Serializable {
 		
 		firstMove = true;
 
+		main.logMove(minor.getBoxType(), thisType, conquerer);
 		main.logNextPlayer();
 	}
 
@@ -216,5 +217,11 @@ public class MinorBox extends JPanel implements Conquerable, Serializable {
 	public void setConquerer(Player player, boolean fill) {
 		this.conquerer = player;
 		drawMark(player, fill);
+	}
+
+	public void clear() {
+		label.setText(null);
+		this.conquerer = null;
+		minor.triggerUpdate();
 	}
 }

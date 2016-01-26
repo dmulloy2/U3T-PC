@@ -109,6 +109,12 @@ public class MinorGrid extends JPanel implements Conquerable, Serializable {
 	}
 
 	public void triggerUpdate() {
+		triggerUpdate(false);
+	}
+
+	public void triggerUpdate(boolean clean) {
+		if (clean) conquerer = null;
+
 		if (conquerer == null) {
 			Combination comboX = Combination.threeInARow(Player.PLAYER_1, boxes);
 			if (comboX != null) {
@@ -129,13 +135,19 @@ public class MinorGrid extends JPanel implements Conquerable, Serializable {
 					main.getBoard().getKey().onConquered(conquerer, boxType);
 				}
 			}
+		} else if (clean) {
+			paint(getGraphics(), clean);
 		}
 	}
 
-	@Override
-	public void paint(Graphics graphics) {
+	public void paint(Graphics graphics, boolean clean) {
 		super.paint(graphics);
 		if (conquerer == null || graphics == null) {
+			if (! clean) {
+				return;
+			}
+
+			graphics.clearRect(0, 0, getWidth(), getHeight());
 			return;
 		}
 
@@ -149,6 +161,11 @@ public class MinorGrid extends JPanel implements Conquerable, Serializable {
 
 		graphics.fillRect(0, 0, getWidth(), getHeight());
 		graphics.setColor(color);
+	}
+
+	@Override
+	public void paint(Graphics graphics) {
+		paint(graphics, false);
 	}
 
 	private Color derive(Color color, int alpha) {

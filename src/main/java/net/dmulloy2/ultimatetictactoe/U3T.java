@@ -36,12 +36,14 @@ import java.util.logging.Level;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import net.dmulloy2.ultimatetictactoe.gui.MajorGrid;
 import net.dmulloy2.ultimatetictactoe.gui.StartGUI;
 import net.dmulloy2.ultimatetictactoe.gui.U3TGUI;
 import net.dmulloy2.ultimatetictactoe.internals.U3Thread;
 import net.dmulloy2.ultimatetictactoe.types.Box;
+import net.dmulloy2.ultimatetictactoe.types.Move;
 import net.dmulloy2.ultimatetictactoe.types.Player;
 import net.dmulloy2.ultimatetictactoe.types.Rules;
 import net.dmulloy2.ultimatetictactoe.util.Closer;
@@ -55,7 +57,7 @@ import org.yaml.snakeyaml.constructor.SafeConstructor;
  */
 
 // TODO List
-// - Testing and polish
+// - Add undoing
 
 public class U3T {
 	private Box nextBox;
@@ -146,8 +148,13 @@ public class U3T {
 		log(Level.INFO, message);
 	}
 
-	public void win(Player player) {
-		info(player.getName() + " has won!");
+	public void win(final Player player) {
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				info(player.getName() + " has won!");
+			}
+		});
 	}
 
 	public void logNextPlayer() {
@@ -313,5 +320,21 @@ public class U3T {
 		majorGrid.finishLoad();
 		this.player = Rules.starter = Player.PLAYER_1;
 		logNextPlayer();
+	}
+
+	private Move lastMove;
+
+	public void logMove(Box major, Box minor, Player player) {
+		this.lastMove = new Move(major, minor, player);
+	}
+
+	public void undo() {
+		if (lastMove == null) {
+			error("There is no move to undo!");
+			return;
+		}
+
+		majorGrid.undo(lastMove);
+		this.player = lastMove.getPlayer();
 	}
 }

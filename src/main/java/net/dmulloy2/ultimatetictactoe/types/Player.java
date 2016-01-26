@@ -30,8 +30,8 @@ import java.util.Map;
  * @author Dan Mulloy
  */
 public enum Player implements Serializable {
-	PLAYER_1("Player 1", "X", new Color(179, 0, 0)),
-	PLAYER_2("Player 2", "O", new Color(0, 0, 179)),
+	PLAYER_1("Player 1", "X", new Color(0, 0, 179)),
+	PLAYER_2("Player 2", "O", new Color(179, 0, 0)),
 	;
 
 	private String name;

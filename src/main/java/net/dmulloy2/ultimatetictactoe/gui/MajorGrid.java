@@ -32,6 +32,7 @@ import net.dmulloy2.ultimatetictactoe.U3T;
 import net.dmulloy2.ultimatetictactoe.types.Box;
 import net.dmulloy2.ultimatetictactoe.types.Combination;
 import net.dmulloy2.ultimatetictactoe.types.Conquerable;
+import net.dmulloy2.ultimatetictactoe.types.Move;
 import net.dmulloy2.ultimatetictactoe.types.Player;
 import net.dmulloy2.ultimatetictactoe.types.Rules;
 import net.dmulloy2.ultimatetictactoe.types.Serializable;
@@ -181,5 +182,11 @@ public class MajorGrid extends JPanel implements Conquerable, Serializable {
 		}
 
 		return map;
+	}
+
+	public void undo(Move move) {
+		MinorGrid grid = getGrid(move.getMajorBox());
+		MinorBox box = grid.boxes[move.getMinorBox().getY()][move.getMinorBox().getX()];
+		box.clear();
 	}
 }

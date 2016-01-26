@@ -123,6 +123,7 @@ public class StartGUI extends JFrame {
 		playerSelector.setEditable(false);
 		playerSelector.addItem("Player 1 Starts");
 		playerSelector.setToolTipText("This is a vestige of the old version; unnecessary now that customization exists.");
+		playerSelector.setVisible(false);
 		//playerSelector.addItem("Starting player");
 		//playerSelector.addItem(Player.PLAYER_1.toString());
 		//playerSelector.addItem(Player.PLAYER_2.toString());
@@ -163,7 +164,7 @@ public class StartGUI extends JFrame {
 		
 		JPanel customSettings = new JPanel();
 
-		tabbedPane.addTab("Custom", null, customSettings, "Customize the players in the game");
+		tabbedPane.addTab("Customize", null, customSettings, "Customize the players in the game");
 		
 		JPanel player1Panel = new JPanel();
 		JPanel player2Panel = new JPanel();
