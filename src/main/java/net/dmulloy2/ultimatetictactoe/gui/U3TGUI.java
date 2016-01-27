@@ -56,9 +56,6 @@ public class U3TGUI extends JFrame {
 
 	private JPanel keyPanel;
 	private Key key;
-	private JMenu mnAbout;
-	private JMenuItem mntmInstructions;
-	private JMenuItem mntmCredits;
 
 	public U3TGUI(final U3T main) {
 		super("Ultimate TicTacToe");
@@ -80,16 +77,14 @@ public class U3TGUI extends JFrame {
 
 	private void init() {
 		getContentPane().setLayout(null);
-		// getContentPane().setBackground(new Color(36, 64, 140));
 
 		// ---- Menu Bar
 		menuBar = new JMenuBar();
+
 		JMenu fileMenu = new JMenu("File");
-		fileMenu.setIcon(null);
+		menuBar.add(fileMenu);
 
 		JMenuItem save = new JMenuItem("Save");
-		save.setIcon(null);
-
 		save.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
@@ -102,9 +97,9 @@ public class U3TGUI extends JFrame {
 			}
 		});
 
-		JMenuItem undo = new JMenuItem("Undo");
-		undo.setIcon(null);
+		fileMenu.add(save);
 
+		JMenuItem undo = new JMenuItem("Undo");
 		undo.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
@@ -112,9 +107,9 @@ public class U3TGUI extends JFrame {
 			}
 		});
 
-		JMenuItem exit = new JMenuItem("Exit");
-		exit.setIcon(null);
+		fileMenu.add(undo);
 
+		JMenuItem exit = new JMenuItem("Exit");
 		exit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
@@ -122,33 +117,32 @@ public class U3TGUI extends JFrame {
 			}
 		});
 
-		fileMenu.add(save);
 		fileMenu.add(exit);
-		menuBar.add(fileMenu);
-		setJMenuBar(menuBar);
-		
-		mnAbout = new JMenu("About");
-		menuBar.add(mnAbout);
-		
-		mntmInstructions = new JMenuItem("Instructions");
-		mntmInstructions.addActionListener(new ActionListener() {
+
+		JMenu aboutMenu = new JMenu("About");
+		menuBar.add(aboutMenu);
+
+		JMenuItem instructions = new JMenuItem("Instructions");
+		instructions.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				new InstructionGUI();
 			}
 		});
 
-		mnAbout.add(mntmInstructions);
-		
-		mntmCredits = new JMenuItem("Credits");
-		mntmCredits.addActionListener(new ActionListener() {
+		aboutMenu.add(instructions);
+
+		JMenuItem credits = new JMenuItem("Credits");
+		credits.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				JOptionPane.showMessageDialog(U3TGUI.this, Versioning.NAME + " v" + Versioning.VERSION + "\n"
 						+ "By: " + Versioning.AUTHORS);
 			}
 		});
-		mnAbout.add(mntmCredits);
+		aboutMenu.add(credits);
+
+		setJMenuBar(menuBar);
 		// ----
 
 		Rectangle resolution = getGraphicsConfiguration().getBounds();
@@ -209,7 +203,6 @@ public class U3TGUI extends JFrame {
 		keyPanel.setBounds(x, y, width, width);
 		keyPanel.setVisible(true);
 
-		//key.setBounds(x, y, width, width);
 		key.init();
 		key.setVisible(true);
 

@@ -265,8 +265,12 @@ public class U3T {
 			int result = fileChooser.showOpenDialog(null);
 			if (result == JFileChooser.APPROVE_OPTION) {
 				File file = fileChooser.getSelectedFile();
-				if (!file.exists()) {
+				if (file == null || !file.exists()) {
 					return "Specified file does not exist!";
+				}
+
+				if (file.isDirectory()) {
+					return "Specified file is a directory!";
 				}
 
 				StringBuilder builder = new StringBuilder();
@@ -307,9 +311,11 @@ public class U3T {
 				if (map.containsKey("nextBox")) {
 					this.nextBox = Box.valueOf((String) map.get("nextBox"));
 				}
-			}
 
-			return null;
+				return null;
+			} else {
+				return "No file selected!";
+			}
 		} catch (Throwable ex) {
 			ex.printStackTrace();
 			return ex.toString();
