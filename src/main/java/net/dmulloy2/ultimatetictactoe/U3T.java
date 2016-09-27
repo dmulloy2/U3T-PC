@@ -21,23 +21,15 @@
  */
 package net.dmulloy2.ultimatetictactoe;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
-import java.io.Writer;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Level;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
+import net.dmulloy2.ultimatetictactoe.config.Config;
 import net.dmulloy2.ultimatetictactoe.gui.MajorGrid;
 import net.dmulloy2.ultimatetictactoe.gui.StartGUI;
 import net.dmulloy2.ultimatetictactoe.gui.U3TGUI;
@@ -46,10 +38,6 @@ import net.dmulloy2.ultimatetictactoe.types.Box;
 import net.dmulloy2.ultimatetictactoe.types.Move;
 import net.dmulloy2.ultimatetictactoe.types.Player;
 import net.dmulloy2.ultimatetictactoe.types.Rules;
-import net.dmulloy2.ultimatetictactoe.util.Closer;
-
-import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.constructor.SafeConstructor;
 
 /**
  * UltimateTicTacToe Main Class
@@ -57,7 +45,6 @@ import org.yaml.snakeyaml.constructor.SafeConstructor;
  */
 
 // TODO List
-// - Add undoing
 
 public class U3T {
 	private Box nextBox;
@@ -175,8 +162,6 @@ public class U3T {
 		JOptionPane.showMessageDialog(null, message, "Ultimate Tic-Tac-Toe", level == Level.SEVERE ? JOptionPane.ERROR_MESSAGE : JOptionPane.INFORMATION_MESSAGE, null);
 	}
 
-	// TODO This code could use some polish and documentation
-
 	/**
 	 * Saves the game to disk.
 	 * @return Result, null if successful
@@ -210,41 +195,25 @@ public class U3T {
 					return ex.toString();
 				}
 
-				Map<String, Object> data = new HashMap<>();
+				Config config = new Config();
 
 				// Save settings
-				data.put("rules.preventGambit", Rules.preventGambit);
-				data.put("rules.allowUseOfConquered", Rules.allowUseOfConquered);
-				data.put("rules.allowCatsGame", Rules.allowCatsGame);
+				config.set("rules.preventGambit", Rules.preventGambit);
+				config.set("rules.allowUseOfConquered", Rules.allowUseOfConquered);
+				config.set("rules.allowCatsGame", Rules.allowCatsGame);
 
 				// Save players
-				data.put("players.1", Player.PLAYER_1.serialize());
-				data.put("players.2", Player.PLAYER_2.serialize());
+				config.set("players.1", Player.PLAYER_1.serialize());
+				config.set("players.2", Player.PLAYER_2.serialize());
 
 				// Save the board
-				data.put("grid", majorGrid.serialize());
+				config.set("grid", majorGrid.serialize());
 
 				if (nextBox != null) {
-					data.put("nextBox", nextBox.name());
+					config.set("nextBox", nextBox.name());
 				}
 
-				// I need to branch out more...
-				Yaml yaml = new Yaml(new SafeConstructor());
-				String string = yaml.dump(data);
-
-				try (Writer writer = new OutputStreamWriter(new FileOutputStream(file), "UTF-8")) {
-					writer.write(string);
-					writer.close();
-				} catch (UnsupportedEncodingException ex) {
-					// Basically impossible, who doesn't support UTF-8
-					return "Somehow your computer doesn't support UTF-8";
-				} catch (FileNotFoundException ex) {
-					// We already ensured it existed...
-					return "File that we created doesn't exist";
-				} catch (IOException ex) {
-					// Generic IOException, not much we can do
-					return ex.toString();
-				}
+				config.save(file);
 			}
 
 			return null;
@@ -258,58 +227,34 @@ public class U3T {
 	 * Loads a previously saved game from disk.
 	 * @return Result, null if successful
 	 */
-	@SuppressWarnings("unchecked")
 	public String load() {
 		try {
 			JFileChooser fileChooser = new JFileChooser();
 			int result = fileChooser.showOpenDialog(null);
 			if (result == JFileChooser.APPROVE_OPTION) {
 				File file = fileChooser.getSelectedFile();
-				if (file == null || !file.exists()) {
-					return "Specified file does not exist!";
-				}
 
-				if (file.isDirectory()) {
-					return "Specified file is a directory!";
-				}
-
-				StringBuilder builder = new StringBuilder();
-
-				try (Closer closer = Closer.create()) {
-					FileReader fr = closer.register(new FileReader(file));
-					BufferedReader br = closer.register(new BufferedReader(fr));
-
-					String line = null;
-					while ((line = br.readLine()) != null) {
-						builder.append(line).append("\n");
-					}
-				} catch (FileNotFoundException ex) {
-					return "Could not find a file that we made sure exists";
-				} catch (IOException ex) {
-					return ex.toString();
-				}
-
-				Yaml yaml = new Yaml(new SafeConstructor());
-				Map<String, Object> map = (Map<String, Object>) yaml.load(builder.toString());
+				Config config = new Config();
+				config.load(file);
 
 				// Load settings
-				Rules.preventGambit = (boolean) map.get("rules.preventGambit");
-				Rules.allowUseOfConquered = (boolean) map.get("rules.allowUseOfConquered");
-				Rules.allowCatsGame = (boolean) map.get("rules.allowCatsGame");
+				Rules.preventGambit = config.getBoolean("rules.preventGambit");
+				Rules.allowUseOfConquered = config.getBoolean("rules.allowUseOfConquered");
+				Rules.allowCatsGame = config.getBoolean("rules.allowCatsGame");
 
 				// Load players
-				Player.PLAYER_1.load((Map<String, Object>) map.get("players.1"));
-				Player.PLAYER_2.load((Map<String, Object>) map.get("players.2"));
+				Player.PLAYER_1.load(config.<String, Object>getMap("players.1"));
+				Player.PLAYER_2.load(config.<String, Object>getMap("players.2"));
 
 				// Load the grid
-				// This is the complicated part. Basically we have to load the settings now, then finish loading later
+				// We have to load the settings now, then finish loading later
 
 				this.majorGrid = new MajorGrid(this);
 				this.board = new U3TGUI(this);
-				majorGrid.load((Map<String, Object>) map.get("grid"));
+				majorGrid.load(config.<String, Object>getMap("grid"));
 
-				if (map.containsKey("nextBox")) {
-					this.nextBox = Box.valueOf((String) map.get("nextBox"));
+				if (config.contains("nextBox")) {
+					this.nextBox = config.getEnum(Box.class, "nextBox");
 				}
 
 				return null;
