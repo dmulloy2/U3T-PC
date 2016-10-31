@@ -38,6 +38,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import net.dmulloy2.ultimatetictactoe.U3T;
+import net.dmulloy2.ultimatetictactoe.gui.info.Key;
 import net.dmulloy2.ultimatetictactoe.internals.Versioning;
 import net.dmulloy2.ultimatetictactoe.types.Box;
 import net.dmulloy2.ultimatetictactoe.util.MathUtil;
@@ -193,11 +194,11 @@ public class U3TGUI extends JFrame {
 		int gridWidth = main.getMajorGrid().getWidth();
 		int freeWidth = (int) resolution.getWidth() - gridWidth;
 
-		MinorGrid minor = main.getMajorGrid().getGrid(Box.MIDDLE_RIGHT);
+		MinorGrid minor = main.getMajorGrid().getGrid(Box.BOTTOM_RIGHT);
 		Rectangle bounds = minor.getBounds();
 
 		int x = (int) (bounds.getX() + (freeWidth / 2)) - 10;
-		int y = (int) bounds.getY() - 10;
+		int y = (int) (bounds.getY() - 20);
 		int width = (int) bounds.getWidth() + 20;
 
 		keyPanel.setBounds(x, y, width, width);
@@ -208,5 +209,9 @@ public class U3TGUI extends JFrame {
 
 		if (getExtendedState() != MAXIMIZED_BOTH)
 			setSize(x + width + 40, getHeight());
+	}
+
+	public void createTurnSignal() {
+		
 	}
 }

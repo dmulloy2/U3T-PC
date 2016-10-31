@@ -136,12 +136,7 @@ public class U3T {
 	}
 
 	public void win(final Player player) {
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				info(player.getName() + " has won!");
-			}
-		});
+		SwingUtilities.invokeLater(() -> info(player.getName() + " has won!"));
 	}
 
 	public void logNextPlayer() {
@@ -212,6 +207,9 @@ public class U3T {
 				if (nextBox != null) {
 					config.set("nextBox", nextBox.name());
 				}
+				if (player != null) {
+					config.set("player", player.name());
+				}
 
 				config.save(file);
 			}
@@ -256,6 +254,9 @@ public class U3T {
 				if (config.contains("nextBox")) {
 					this.nextBox = config.getEnum(Box.class, "nextBox");
 				}
+				if (config.contains("player")) {
+					this.player = config.getEnum(Player.class, "player");
+				}
 
 				return null;
 			} else {
@@ -269,7 +270,10 @@ public class U3T {
 
 	public void finishLoad() {
 		majorGrid.finishLoad();
-		this.player = Rules.starter = Player.PLAYER_1;
+
+		if (player == null)
+			this.player = Rules.starter;
+
 		logNextPlayer();
 	}
 
@@ -287,5 +291,6 @@ public class U3T {
 
 		majorGrid.undo(lastMove);
 		this.player = lastMove.getPlayer();
+		this.nextBox = lastMove.getMajorBox();
 	}
 }

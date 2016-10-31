@@ -21,10 +21,13 @@
  */
 package net.dmulloy2.ultimatetictactoe.gui;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.ComponentOrientation;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.awt.Stroke;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,9 +49,10 @@ public class MinorGrid extends JPanel implements Conquerable, Serializable {
 
 	private int buffer;
 	protected MinorBox[][] boxes;
-	private Player conquerer;
 	private Box boxType;
 
+	private Combination combo;
+	private Player conquerer;
 	private Color tint;
 
 	protected final U3T main;
@@ -62,20 +66,44 @@ public class MinorGrid extends JPanel implements Conquerable, Serializable {
 		this.boxType = boxType;
 	}
 
+	@FunctionalInterface
+	public static interface CoordConsumer {
+		void accept(int x, int y);
+	}
+
+	@FunctionalInterface
+	public static interface BoxConsumer {
+		void accept(MinorBox box);
+	}
+
+	protected void forEach(CoordConsumer iter) {
+		for (int x = 0; x < boxes.length; x++) {
+			for (int y = 0; y < boxes.length; y++) {
+				iter.accept(x, y);
+			}
+		}
+	}
+
+	protected void forEach(BoxConsumer iter) {
+		for (int x = 0; x < boxes.length; x++) {
+			for (int y = 0; y < boxes.length; y++) {
+				iter.accept(boxes[x][y]);
+			}
+		}
+	}
+
 	public void init() {
 		GridLayout layout = new GridLayout(3, 3, buffer, buffer);
 		applyComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 		setLayout(layout);
 
-		for (int x = 0; x < boxes.length; x++) {
-			for (int y = 0; y < boxes.length; y++) {
-				MinorBox box = new MinorBox(main, this, Box.fromCoords(y, x));
-				add(box);
+		forEach((x, y) -> {
+			MinorBox box = new MinorBox(main, this, Box.fromCoords(y, x));
+			add(box);
 
-				box.init();
-				boxes[x][y] = box;
-			}
-		}
+			box.init();
+			boxes[x][y] = box;
+		});
 	}
 
 	@SuppressWarnings("unchecked")
@@ -84,23 +112,21 @@ public class MinorGrid extends JPanel implements Conquerable, Serializable {
 		applyComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 		setLayout(layout);
 
-		for (int x = 0; x < boxes.length; x++) {
-			for (int y = 0; y < boxes.length; y++) {
-				MinorBox box = new MinorBox(main, this, Box.fromCoords(y, x));
-				add(box);
+		forEach((x, y) -> {
+			MinorBox box = new MinorBox(main, this, Box.fromCoords(y, x));
+			add(box);
 
-				box.load((Map<String, Object>) data.get("boxes." + x + "." + y));
-				boxes[x][y] = box;
-			}
+			box.load((Map<String, Object>) data.get("boxes." + x + "." + y));
+			boxes[x][y] = box;
+		});
+
+		if (data.containsKey("combo")) {
+			this.combo = Combination.valueOf((String) data.get("combo"));
 		}
 	}
 
 	public void finishLoad() {
-		for (int x = 0; x < boxes.length; x++) {
-			for (int y = 0; y < boxes.length; y++) {
-				boxes[x][y].finishLoad();
-			}
-		}
+		forEach(box -> box.finishLoad());
 	}
 
 	@Override
@@ -118,12 +144,14 @@ public class MinorGrid extends JPanel implements Conquerable, Serializable {
 		if (conquerer == null) {
 			Combination comboX = Combination.threeInARow(Player.PLAYER_1, boxes);
 			if (comboX != null) {
+				this.combo = comboX;
 				this.conquerer = Player.PLAYER_1;
 				paint(getGraphics());
 			}
 
 			Combination comboO = Combination.threeInARow(Player.PLAYER_2, boxes);
 			if (comboO != null) {
+				this.combo = comboO;
 				this.conquerer = Player.PLAYER_2;
 				paint(getGraphics());
 			}
@@ -153,14 +181,41 @@ public class MinorGrid extends JPanel implements Conquerable, Serializable {
 
 		Color color = graphics.getColor();
 
-		if (conquerer == Player.PLAYER_1) {
-			graphics.setColor(tint = derive(Player.PLAYER_1.getColor(), 50));
-		} else if (conquerer == Player.PLAYER_2) {
-			graphics.setColor(tint = derive(Player.PLAYER_2.getColor(), 50));
+		if (tint == null) {
+			tint = derive(conquerer.getColor(), 50);
 		}
 
+		graphics.setColor(tint);
 		graphics.fillRect(0, 0, getWidth(), getHeight());
+
+		if (combo != null) {
+			Graphics2D graphics2 = (Graphics2D) graphics;
+			Stroke old = graphics2.getStroke();
+			graphics2.setStroke(new BasicStroke(10f));
+
+			Box[] boxes = combo.getBoxes();
+			// Draw the line from the first to last
+			MinorBox first = getBox(boxes[0]);
+			MinorBox last = getBox(boxes[2]);
+
+			// Middle of the first
+			int x1 = first.getX() + first.getWidth() / 2;
+			int y1 = first.getY() + first.getHeight() / 2;
+
+			// Middle of the last
+			int x2 = last.getX() + last.getWidth() / 2;
+			int y2 = last.getY() + last.getHeight() / 2;
+
+			graphics.setColor(conquerer.getColor());
+			graphics.drawLine(x1, y1, x2, y2);
+			graphics2.setStroke(old);
+		}
+
 		graphics.setColor(color);
+	}
+
+	private MinorBox getBox(Box box) {
+		return boxes[box.getX()][box.getY()];
 	}
 
 	@Override
@@ -179,13 +234,16 @@ public class MinorGrid extends JPanel implements Conquerable, Serializable {
 	public boolean isFull() {
 		for (int x = 0; x < boxes.length; x++) {
 			for (int y = 0; y < boxes.length; y++) {
-				if (boxes[x][y].getConquerer() == null) {
+				if (boxes[x][y].getConquerer() == null)
 					return false;
-				}
 			}
 		}
 
 		return true;
+	}
+
+	protected void clear() {
+		forEach(box -> box.clear());
 	}
 
 	public Color getTint() {
@@ -195,10 +253,10 @@ public class MinorGrid extends JPanel implements Conquerable, Serializable {
 	@Override
 	public Map<String, Object> serialize() {
 		Map<String, Object> map = new HashMap<>();
-		for (int x = 0; x < boxes.length; x++) {
-			for (int y = 0; y < boxes.length; y++) {
-				map.put("boxes." + x + "." + y, boxes[x][y].serialize());
-			}
+		forEach((x, y) -> map.put("boxes." + x + "." + y, boxes[x][y].serialize()));
+
+		if (combo != null) {
+			map.put("combo", combo.name());
 		}
 
 		return map;

@@ -19,43 +19,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package net.dmulloy2.ultimatetictactoe.gui;
+package net.dmulloy2.ultimatetictactoe.gui.info;
 
 import java.awt.event.MouseAdapter;
+
 import java.awt.event.MouseEvent;
 
 import net.dmulloy2.ultimatetictactoe.U3T;
+import net.dmulloy2.ultimatetictactoe.gui.MinorGrid;
 import net.dmulloy2.ultimatetictactoe.types.Box;
-import net.dmulloy2.ultimatetictactoe.types.Player;
 
 /**
- * The key that appears to the right of the main board
+ * A box that shows information and cannot be clicked
  * @author Dan Mulloy
  */
-public class Key extends MinorGrid {
-	private static final long serialVersionUID = 2417357033766579161L;
+public abstract class InfoGrid extends MinorGrid {
+	private static final long serialVersionUID = 1L;
 
-	private boolean exists = false;
-
-	public Key(U3T main, Box boxType) {
+	public InfoGrid(U3T main, Box boxType) {
 		super(main, boxType);
 
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent event) {
-				// Cancel all mouse clicked events in the key
 				event.consume();
 			}
 		});
 	}
 
-	public void onConquered(Player player, Box box) {
-		if (! exists) {
-			main.getBoard().createKey();
-			exists = true;
-		}
-
-		// Draw a solid square in the corresponding minor box
-		boxes[box.getY()][box.getX()].setConquerer(player, true);
-	}
 }
