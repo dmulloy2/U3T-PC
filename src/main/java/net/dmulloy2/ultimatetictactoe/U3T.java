@@ -79,7 +79,6 @@ public class U3T {
 		majorGrid.init();
 
 		this.player = Rules.starter;
-		logNextPlayer();
 	}
 
 	// ---- Getters
@@ -114,15 +113,14 @@ public class U3T {
 
 	// ---- Setters
 
-	public void setNextBox(Box nextBox) {
-		this.nextBox = nextBox;
+	public void nextMove(Box nextBox) {
+		this.player = player == Player.PLAYER_1 ? Player.PLAYER_2 : Player.PLAYER_1;
+		setNextBox(nextBox);
 	}
 
-	/**
-	 * Switches to the next player
-	 */
-	public void nextPlayer() {
-		this.player = player == Player.PLAYER_1 ? Player.PLAYER_2 : Player.PLAYER_1;
+	public void setNextBox(Box nextBox) {
+		this.nextBox = nextBox;
+		board.getSignal().signal(player, nextBox);
 	}
 
 	// ---- Utility
@@ -252,7 +250,7 @@ public class U3T {
 				majorGrid.load(config.<String, Object>getMap("grid"));
 
 				if (config.contains("nextBox")) {
-					this.nextBox = config.getEnum(Box.class, "nextBox");
+					setNextBox(config.getEnum(Box.class, "nextBox"));
 				}
 				if (config.contains("player")) {
 					this.player = config.getEnum(Player.class, "player");
@@ -291,6 +289,6 @@ public class U3T {
 
 		majorGrid.undo(lastMove);
 		this.player = lastMove.getPlayer();
-		this.nextBox = lastMove.getMajorBox();
+		setNextBox(lastMove.getMajorBox());
 	}
 }

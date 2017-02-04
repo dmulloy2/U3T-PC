@@ -9,12 +9,13 @@ public class TurnSignal extends InfoGrid {
 
 	public TurnSignal(U3T main, Box boxType) {
 		super(main, boxType);
-		// TODO Auto-generated constructor stub
 	}
 
 	public void signal(Player player, Box box) {
 		clear();
-		boxes[box.getY()][box.getX()].setConquerer(player, true);
+
+		if (box != null)
+			boxes[box.getY()][box.getX()].setConquerer(player, true);
 	}
 
 }

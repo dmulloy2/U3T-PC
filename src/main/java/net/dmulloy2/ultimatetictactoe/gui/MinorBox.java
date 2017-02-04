@@ -144,8 +144,7 @@ public class MinorBox extends JPanel implements Conquerable, Serializable {
 		this.conquerer = main.getPlayer();
 		drawMark(conquerer, false);
 
-		main.nextPlayer();
-		main.setNextBox(thisType);
+		main.nextMove(thisType);
 
 		if (! Rules.allowUseOfConquered) {
 			MinorGrid nextGrid = main.getMajorGrid().getGrid(thisType);
@@ -168,6 +167,11 @@ public class MinorBox extends JPanel implements Conquerable, Serializable {
 
 	private void drawMark(Player player, boolean fill) {
 		if (fill) {
+			if (player == null) {
+				setBackground(Color.WHITE);
+				return;
+			}
+
 			switch (player) {
 				case PLAYER_1:
 					setBackground(Player.PLAYER_1.getColor());
@@ -175,6 +179,8 @@ public class MinorBox extends JPanel implements Conquerable, Serializable {
 				case PLAYER_2:
 					setBackground(Player.PLAYER_2.getColor());
 					break;
+				default:
+					throw new IllegalArgumentException(player.toString());
 			}
 
 			return;
@@ -221,7 +227,7 @@ public class MinorBox extends JPanel implements Conquerable, Serializable {
 
 	public void clear() {
 		label.setText(null);
-		this.conquerer = null;
+		setConquerer(null, true);
 		minor.triggerUpdate();
 	}
 }

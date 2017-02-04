@@ -39,6 +39,7 @@ import javax.swing.SwingUtilities;
 
 import net.dmulloy2.ultimatetictactoe.U3T;
 import net.dmulloy2.ultimatetictactoe.gui.info.Key;
+import net.dmulloy2.ultimatetictactoe.gui.info.TurnSignal;
 import net.dmulloy2.ultimatetictactoe.internals.Versioning;
 import net.dmulloy2.ultimatetictactoe.types.Box;
 import net.dmulloy2.ultimatetictactoe.util.MathUtil;
@@ -58,6 +59,9 @@ public class U3TGUI extends JFrame {
 	private JPanel keyPanel;
 	private Key key;
 
+	private JPanel turnPanel;
+	private TurnSignal signal;
+
 	public U3TGUI(final U3T main) {
 		super("Ultimate TicTacToe");
 		this.main = main;
@@ -70,6 +74,9 @@ public class U3TGUI extends JFrame {
 
 				MajorGrid major = main.getMajorGrid();
 				setSize(major.getWidth() + 15, major.getHeight() + 80);
+				setExtendedState(MAXIMIZED_BOTH);
+
+				createTurnSignal();
 			}
 		});
 
@@ -170,6 +177,18 @@ public class U3TGUI extends JFrame {
 
 		getContentPane().add(keyPanel);
 
+		// Add the turn signal, we'll add once the game starts
+		signal = new TurnSignal(main, Box.MIDDLE);
+		signal.setVisible(false);
+
+		turnPanel = new JPanel();
+		turnPanel.setLayout(new GridLayout(1, 1, 10, 10));
+		turnPanel.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 10, false));
+		turnPanel.add(signal);
+		turnPanel.setVisible(false);
+
+		getContentPane().add(turnPanel);
+
 		// Text at the bottom
 		outputField = new JTextField("", 10);
 		outputField.setLocation(0, width);
@@ -186,6 +205,10 @@ public class U3TGUI extends JFrame {
 
 	public Key getKey() {
 		return key;
+	}
+
+	public TurnSignal getSignal() {
+		return signal;
 	}
 
 	public void createKey() {
@@ -206,12 +229,28 @@ public class U3TGUI extends JFrame {
 
 		key.init();
 		key.setVisible(true);
-
-		if (getExtendedState() != MAXIMIZED_BOTH)
-			setSize(x + width + 40, getHeight());
 	}
 
 	public void createTurnSignal() {
-		
+		// Make it slightly to the right of the top middle box
+		Rectangle resolution = getGraphicsConfiguration().getBounds();
+		int gridWidth = main.getMajorGrid().getWidth();
+		int freeWidth = (int) resolution.getWidth() - gridWidth;
+
+		MinorGrid minor = main.getMajorGrid().getGrid(Box.TOP_RIGHT);
+		Rectangle bounds = minor.getBounds();
+
+		int x = (int) (bounds.getX() + (freeWidth / 2)) - 10;
+		int y = (int) (bounds.getY() + 20);
+		int width = (int) bounds.getWidth() + 20;
+
+		turnPanel.setBounds(x, y, width, width);
+		turnPanel.setVisible(true);
+
+		signal.init();
+		signal.setVisible(true);
+
+		if (getExtendedState() != MAXIMIZED_BOTH)
+			setSize(x + width + 40, getHeight());
 	}
 }
